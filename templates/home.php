@@ -20,7 +20,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 
 <h1>Accueil</h1>
 
-Bienvenue dans notre site de messagerie instantanée !
+Bienvenue dans notre site de suivi d'entraînements sportifs !
 C'est bien ici !!
 
 </div>
