@@ -31,28 +31,28 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 <div id="banniere">
 
 <div id="logo">
-<img src="ressources/ec-lille-rect.png" />
+<a href="index.php?view=home"><img src="ressources/weblift_home_button.png"></a>
 </div>
-
-<a href="index.php?view=home">Accueil</a>
-<a href="index.php?view=login">Connexion</a>
-<a href="index.php?view=logout">Déconnexion</a>
-<a href="index.php?view=exercises">Exercices</a>
-<a href="index.php?view=groups">Mes groupes</a>
-<a href="index.php?view=dashboard">Mon tableau de bord</a>
-<a href="index.php?view=logout">Entraînement</a>
-<a href="index.php?view=cycles">Mes cycles</a>
-<a href="index.php?view=exercisesadm">Gestion des exercices</a>
-<a href="index.php?view=cyclesadm">Gestion des cycles</a>
-<a href="index.php?view=feedbacks">Feedbacks</a>
-<a href="index.php?view=accounts">Gestion des comptes</a>
-<a href="index.php?view=groupadm">Gestion des groupes</a>
 
 
 <?php
 // Si l'utilisateur n'est pas connecte, on affiche un lien de connexion 
-if (!valider("connecte","SESSION"))
+if (!valider("connecte","SESSION")){
 	echo "<a href=\"index.php?view=login\">Se connecter</a>";
+}
+else {
+	echo "<a href=\"index.php?view=logout\">Déconnexion</a>;
+	<a href=\"index.php?view=exercises\">Exercices</a>;
+	<a href=\"index.php?view=groups\">Mes groupes</a>
+	<a href=\"index.php?view=dashboard\">Mon tableau de bord</a>
+	<a href=\"index.php?view=logout\">Entraînement</a>
+	<a href=\"index.php?view=cycles\">Mes cycles</a>
+	<a href=\"index.php?view=exercisesadm\">Gestion des exercices</a>
+	<a href=\"index.php?view=cyclesadm\">Gestion des cycles</a>
+	<a href=\"index.php?view=feedbacks\">Feedbacks</a>
+	<a href=\"index.php?view=accounts\">Gestion des comptes</a>
+	<a href=\"index.php?view=groupadm\">Gestion des groupes</a>";
+}
 ?>
 
 <h1 id="stitre"> Webfit </h1>
