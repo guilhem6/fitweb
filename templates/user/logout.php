@@ -4,13 +4,13 @@
 // Quand on vient de index : 
 // [PHP_SELF] => /chatISIG/index.php 
 // Quand on vient directement par le répertoire templates
-// [PHP_SELF] => /chatISIG/templates/accueil.php
+// [PHP_SELF] => /chatISIG/templates/home.php
 
 // Si la page est appelée directement par son adresse, on redirige en passant pas la page index
 // Pas de soucis de bufferisation, puisque c'est dans le cas où on appelle directement la page sans son contexte
 if (basename($_SERVER["PHP_SELF"]) != "index.php")
 {
-	header("Location:../index.php?view=accueil");
+	header("Location:../../index.php?view=logout");
 	die("");
 }
 
@@ -18,9 +18,8 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 
 <div id="corps">
 
-<h1>Accueil</h1>
+<h1>Déconnexion</h1>
 
-Bienvenue dans notre site de suivi d'entraînements sportifs !
-C'est bien ici !!
+Vous avez été déconnecté [en fait non, ça n'a pas encore été implémenté]
 
 </div>

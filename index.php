@@ -28,26 +28,75 @@ Les formulaires de toutes les vues générées enverront leurs données vers la 
 		$view = false;
 	*/
 
-	// S'il est vide, on charge la vue accueil par défaut
-	if (!$view) $view = "accueil"; 
+	// S'il est vide, on charge la vue home par défaut
+	if (!$view) $view = "home"; 
 
 	// En fonction de la vue à afficher, on appelle tel ou tel template
 	switch($view)
 	{		
 
-		case "accueil" : 
-			include("templates/accueil.php");
+		case "home" : 
+			include("templates/home.php");
 		break;
 
-		case "login" : 
-		case "connexion" : 
-		case "connect" : 
+		case "login" :
 			include("templates/login.php");
-		break; 
-
-		case "users" : 
-			include("templates/users.php");
 		break;
+
+		case "exercises" :
+			include("templates/user/exercises.php");
+		break;
+
+		case "groups" :
+			include("templates/user/groups.php");
+		break;
+
+		case "dashboard" :
+			include("templates/user/dashboard.php");
+		break;
+
+		case "training" :
+			include("templates/user/training.php");
+		break;
+
+		case "cycles" :
+			include("templates/user/cycles.php");
+		break;
+
+		case "logout" :
+			include("templates/user/logout.php");
+		break;
+
+		case "accounts" :
+			include("templates/user/accounts.php");
+		break;
+
+		case "groupadm" :
+			include("templates/user/groupadm.php");
+		break;
+
+		case "exercisesadm" :
+			include("templates/user/exercisesadm.php");
+		break;
+
+		case "cyclesadm" :
+			include("templates/user/cyclesadm.php");
+		break;
+
+		case "feedbacks" :
+			include("templates/user/feedbacks.php");
+		break;
+
+		
+		
+
+		
+		
+
+		
+		
+
+		
 
 		default : // si le template correspondant à l'argument existe, on l'affiche
 			if (file_exists("templates/$view.php"))

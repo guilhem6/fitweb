@@ -19,7 +19,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 <!-- **** H E A D **** -->
 <head>	
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-15" />
-	<title>Chat TWE 2023</title>
+	<title>Webfit</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <!-- **** F I N **** H E A D **** -->
@@ -34,9 +34,20 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 <img src="ressources/ec-lille-rect.png" />
 </div>
 
-<a href="index.php?view=accueil">Accueil</a>
-<a href="index.php?view=users">Utilisateurs</a>
-<a href="index.php?view=conversations">Conversations</a>
+<a href="index.php?view=home">Accueil</a>
+<a href="index.php?view=login">Connexion</a>
+<a href="index.php?view=logout">Déconnexion</a>
+<a href="index.php?view=exercises">Exercices</a>
+<a href="index.php?view=groups">Mes groupes</a>
+<a href="index.php?view=dashboard">Mon tableau de bord</a>
+<a href="index.php?view=logout">Entraînement</a>
+<a href="index.php?view=cycles">Mes cycles</a>
+<a href="index.php?view=exercisesadm">Gestion des exercices</a>
+<a href="index.php?view=cyclesadm">Gestion des cycles</a>
+<a href="index.php?view=feedbacks">Feedbacks</a>
+<a href="index.php?view=accounts">Gestion des comptes</a>
+<a href="index.php?view=groupadm">Gestion des groupes</a>
+
 
 <?php
 // Si l'utilisateur n'est pas connecte, on affiche un lien de connexion 
@@ -44,6 +55,6 @@ if (!valider("connecte","SESSION"))
 	echo "<a href=\"index.php?view=login\">Se connecter</a>";
 ?>
 
-<h1 id="stitre"> Chat TWE 2023 </h1>
+<h1 id="stitre"> Webfit </h1>
 
 </div>
