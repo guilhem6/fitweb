@@ -1,0 +1,273 @@
+{
+	"info": {
+		"_postman_id": "55b893fe-0cf8-4813-94fa-a7870fafa136",
+		"name": "project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27914622"
+	},
+	"item": [
+		{
+			"name": "project/api/users",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "hash",
+						"value": "{{hash}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://project/api/users",
+					"protocol": "http",
+					"host": [
+						"project"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project/api/users?user=testos&password=oui",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "hash",
+						"value": "{{hash}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://project/api/users?user=marco&password=polo",
+					"protocol": "http",
+					"host": [
+						"project"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "marco"
+						},
+						{
+							"key": "password",
+							"value": "polo"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project/api/authenticate?user={{pseudo}}&password={{password}}",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "hash",
+						"value": "{{hash}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://project/api/authenticate?user={{pseudo}}&password={{password}}",
+					"protocol": "http",
+					"host": [
+						"project"
+					],
+					"path": [
+						"api",
+						"authenticate"
+					],
+					"query": [
+						{
+							"key": "user",
+							"value": "{{pseudo}}"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project/api/authenticate",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://project/api/authenticate",
+					"protocol": "http",
+					"host": [
+						"project"
+					],
+					"path": [
+						"api",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project/api/users/{{id}}/exercices?title=premierexo&descr=yeya&duration=50&theme=Biceps",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "hash",
+						"value": "{{hash}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://project/api/users/{{id}}/exercices?title=premierexo&descr=yeya&duration=50&theme=Biceps",
+					"protocol": "http",
+					"host": [
+						"project"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{id}}",
+						"exercices"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "premierexo"
+						},
+						{
+							"key": "descr",
+							"value": "yeya"
+						},
+						{
+							"key": "duration",
+							"value": "50"
+						},
+						{
+							"key": "theme",
+							"value": "Biceps"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project/api/users/{{id}}/exercices?title=premierexo&descr=yeya&duration=50&theme=Biceps Copy",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "hash",
+						"value": "{{hash}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://project/api/users/{{id}}/exercices?title=premierexo&descr=yeya&duration=50&theme=Biceps",
+					"protocol": "http",
+					"host": [
+						"project"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{id}}",
+						"exercices"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "premierexo"
+						},
+						{
+							"key": "descr",
+							"value": "yeya"
+						},
+						{
+							"key": "duration",
+							"value": "50"
+						},
+						{
+							"key": "theme",
+							"value": "Biceps"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project/api/users/1/exercices/3",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "hash",
+						"value": "{{hash}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://project/api/users/1/exercices/5",
+					"protocol": "http",
+					"host": [
+						"project"
+					],
+					"path": [
+						"api",
+						"users",
+						"1",
+						"exercices",
+						"5"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "premierexo",
+							"disabled": true
+						},
+						{
+							"key": "descr",
+							"value": "yeya eceec",
+							"disabled": true
+						},
+						{
+							"key": "duration",
+							"value": "50",
+							"disabled": true
+						},
+						{
+							"key": "theme",
+							"value": "Biceps",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "project/api/exercices",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
