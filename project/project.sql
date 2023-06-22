@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 22 juin 2023 à 13:29
+-- Généré le : jeu. 22 juin 2023 à 16:14
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -52,8 +52,17 @@ CREATE TABLE IF NOT EXISTS `cycles` (
   `theme` varchar(100) NOT NULL,
   `creator` int NOT NULL,
   `breaktime` int NOT NULL,
+  `repetition` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `cycles`
+--
+
+INSERT INTO `cycles` (`id`, `title`, `theme`, `creator`, `breaktime`, `repetition`) VALUES
+(1, 'premiercycle', 'escalade', 1, 20, 5),
+(2, 'secondcycle', 'courseapied', 1, 40, 7);
 
 -- --------------------------------------------------------
 
@@ -103,8 +112,19 @@ DROP TABLE IF EXISTS `innercycles`;
 CREATE TABLE IF NOT EXISTS `innercycles` (
   `id_exercice` int NOT NULL,
   `id_cycle` int NOT NULL,
-  `order_ex` int NOT NULL
+  `order_ex` int NOT NULL,
+  `duration` int NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `innercycles`
+--
+
+INSERT INTO `innercycles` (`id_exercice`, `id_cycle`, `order_ex`, `duration`) VALUES
+(6, 1, 2, 60),
+(6, 1, 4, 60),
+(6, 1, 3, 120),
+(6, 1, 1, 400);
 
 -- --------------------------------------------------------
 
