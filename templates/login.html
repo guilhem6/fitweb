@@ -1,0 +1,21 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="utilities.js"></script>
+
+<script>
+	$(document).ready(function() {
+	  $("#connexion-btn").click(function() {
+		var user = $("#login").val();
+		var pass = $("#pass").val();
+		connexion(user, pass);
+	  });
+	});
+</script>
+
+<div id="corps">
+
+	<h1>Connexion</h1>
+	
+	Login : <input type="text" id="login" /><br />
+	Passe : <input type="password" id="pass" /><br />
+	<input type="submit" name="action" value="Connexion / Créer un compte" id="connexion-btn" />
+</div>
