@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 22 juin 2023 à 16:14
+-- Généré le : mar. 27 juin 2023 à 23:08
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -42,6 +42,28 @@ CREATE TABLE IF NOT EXISTS `assignments` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `community`
+--
+
+DROP TABLE IF EXISTS `community`;
+CREATE TABLE IF NOT EXISTS `community` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `theme` varchar(100) NOT NULL,
+  `creator` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `community`
+--
+
+INSERT INTO `community` (`id`, `title`, `theme`, `creator`) VALUES
+(3, 'Groupe test', 'Super theme', 3);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `cycles`
 --
 
@@ -54,15 +76,16 @@ CREATE TABLE IF NOT EXISTS `cycles` (
   `breaktime` int NOT NULL,
   `repetition` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `cycles`
 --
 
 INSERT INTO `cycles` (`id`, `title`, `theme`, `creator`, `breaktime`, `repetition`) VALUES
-(1, 'premiercycle', 'escalade', 1, 20, 5),
-(2, 'secondcycle', 'courseapied', 1, 40, 7);
+(5, 'Entrainement du Dos', 'Dos', 3, 20, 5),
+(2, 'secondcycle', 'courseapied', 1, 40, 7),
+(3, 'cyclepolo', 'courseapied', 4, 40, 7);
 
 -- --------------------------------------------------------
 
@@ -78,29 +101,19 @@ CREATE TABLE IF NOT EXISTS `exercices` (
   `duration` int NOT NULL,
   `theme` varchar(100) NOT NULL,
   `creator` int NOT NULL,
+  `image` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `exercices`
 --
 
-INSERT INTO `exercices` (`id`, `title`, `descr`, `duration`, `theme`, `creator`) VALUES
-(6, 'Super Exercice', 'Cet exercice fait bien les pecs !', 120, 'Pectoraux', 1);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `groups`
---
-
-DROP TABLE IF EXISTS `groups`;
-CREATE TABLE IF NOT EXISTS `groups` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `theme` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+INSERT INTO `exercices` (`id`, `title`, `descr`, `duration`, `theme`, `creator`, `image`) VALUES
+(6, 'Super Exercice', 'Cet exercice fait bien les pecs !', 120, 'Pectoraux', 1, ''),
+(7, 'premierexo', 'yeya', 50, 'Biceps', 1, '/project/pompe.jpg'),
+(8, 'Squat', 'Plier les jambes et musclez les fesses !', 120, 'Summer body', 3, '/project/squat.jpg'),
+(9, 'Traction', 'Hop hop hop on monte le torse', 30, 'Dos large', 3, '/project/traction.jpg');
 
 -- --------------------------------------------------------
 
@@ -121,10 +134,9 @@ CREATE TABLE IF NOT EXISTS `innercycles` (
 --
 
 INSERT INTO `innercycles` (`id_exercice`, `id_cycle`, `order_ex`, `duration`) VALUES
-(6, 1, 2, 60),
-(6, 1, 4, 60),
-(6, 1, 3, 120),
-(6, 1, 1, 400);
+(7, 5, 2, 180),
+(8, 5, 1, 120),
+(6, 5, 3, 420);
 
 -- --------------------------------------------------------
 
@@ -137,6 +149,15 @@ CREATE TABLE IF NOT EXISTS `members` (
   `id_user` int NOT NULL,
   `id_group` int NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `members`
+--
+
+INSERT INTO `members` (`id_user`, `id_group`) VALUES
+(1, 3),
+(4, 3),
+(3, 3);
 
 -- --------------------------------------------------------
 
@@ -175,7 +196,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `pseudo`, `pass`, `hash`, `trainer`, `admin`) VALUES
 (1, 'antho', 'azer', '823679bebd3b19712899506974ceba5a', 1, 1),
 (2, 'testos', 'oui', '846fc8c9401170423bc58d7729fb6d0a', 0, 0),
-(3, 'guilhem', 'super', 'bba7c629e080bdd40083f9d9ff32a898', 0, 0),
+(3, 'guilhem', 'super', 'bba7c629e080bdd40083f9d9ff32a898', 1, 0),
 (4, 'marco', 'polo', 'a18cc49e47b9dd77e5aebef85601c316', 0, 0);
 COMMIT;
 
