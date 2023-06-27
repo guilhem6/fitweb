@@ -1,5 +1,5 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="utilities.js"></script>
+<script src="../js/utils.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -7,6 +7,13 @@
 		var user = $("#login").val();
 		var pass = $("#pass").val();
 		connexion(user, pass);
+	  });
+
+	  $("#create-account-btn").click(function() {
+		var user = $("#login2").val();
+		var pass = $("#pass2").val();
+		var isTrainer = $("#is-trainer").is(':checked');
+		createAccount(user, pass,isTrainer);
 	  });
 	});
 </script>
@@ -17,5 +24,12 @@
 	
 	Login : <input type="text" id="login" /><br />
 	Passe : <input type="password" id="pass" /><br />
-	<input type="submit" name="action" value="Connexion / Créer un compte" id="connexion-btn" />
+	<input type="submit" name="action" value="Connexion" id="connexion-btn" />
+
+	<h1>Create an account</h1>
+
+	Login : <input type="text" id="login2" /><br />
+	Passe : <input type="password" id="pass2" /><br />
+	<input type="checkbox" id="is-trainer" />Trainer <br />
+	<input type="submit" name="action" value="Creer un compte" id="create-account-btn" />
 </div>
