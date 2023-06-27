@@ -3,18 +3,31 @@
 
 <script>
 	$(document).ready(function() {
-	
-
 	$("#logoutForm").submit(function() {
 		event.preventDefault();
-		console.log("submit du logout form")
-		deconnexion();});
+		console.log("submit du logout form");
+		deconnexionState = deconnexion();
+
+		
+		if(deconnexionState){
+			console.log("Vous avez été déconnecté avec succès.");
+			$("#logoutMsg").text("Vous avez ete deconnecte avec succes.");
+		}else{
+			console.log("Vous avez déjà été déconnecté.");
+			$("#logoutMsg").text("Vous avez deja ete deconnecte.");
+		}
+
+		window.location.href = '../login.html';
+	});
 	});
 </script>
 
 <body>
+	
 	<h1>Déconnexion</h1>
 	<form id="logoutForm">
 		<input type="submit" name="action" value="Se deconnecter" id="logout-btn" />
 	</form>
+	<p id="logoutMsg"></p>
+	
 </body>

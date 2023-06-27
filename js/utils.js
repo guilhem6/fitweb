@@ -125,5 +125,13 @@ function affichageUser(){
 }
 
 function deconnexion(){
+    console.log("deconnexion");
+    var storedUsername = localStorage.getItem('username');
+    if(storedUsername==null){
+        console.log("deja deconnecte");
+        return false
+    }
+    else{
     localStorage.removeItem('username');
+    return true;}
 }
