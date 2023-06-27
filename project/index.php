@@ -126,9 +126,16 @@ if (valider("request")) {
 				} 
 				else {
 					// GET /api/users
-					$data["users"] = getUsers();
-					$data["success"] = true;
-					$data["status"] = 200;
+					if ($student = valider("student")){
+						$data["users"] = getUsers($student);
+						$data["success"] = true;
+						$data["status"] = 200;
+					} else {
+						$data["users"] = getUsers();
+						$data["success"] = true;
+						$data["status"] = 200;
+					}
+					
 				}
 			break; 
 
@@ -193,32 +200,47 @@ if (valider("request")) {
 			case 'GET_exercices' :
 				if ($idEntite1){
 					// GET /api/exercices/<id>
-					// si un id est fourni on renvoi les exos de l'utilisateur
+					// si un id est fourni on renvoi l'exo en question
 					// sinon tous
-					$data["article"] = getExercices($idEntite1);
+					$data["exercice"] = getExercice($idEntite1);
+					$data["success"] = true;
+					$data["status"] = 200;
+				} else {
+					// GET /api/exercices
+					$data["exercices"] = getExercices();
+					$data["success"] = true;
+					$data["status"] = 200; 
+				}
+			break;
+
+			case 'GET_users_exercices' :
+				if ($idEntite1){
+					// GET /api/users/<id>/exercices
+					// on renvoi les exos de l'utilisateur
+					$data["exercices"] = getExercices($idEntite1);
 					$data["success"] = true;
 					$data["status"] = 200;
 				} else {
 					// GET /api/articles
 					// Les listes de l'utilisateur connecté
-					$data["articles"] = getExercices();
+					$data["exercices"] = getExercices();
 					$data["success"] = true;
 					$data["status"] = 200; 
 				}
 			break;
-				
 
 			case 'POST_users_exercices' : 
-				// POST /api/users/<id>/exercices?title=...descr=...duration=...theme=...
+				// POST /api/users/<id>/exercices?title=...descr=...duration=...theme=...image=...
 				if ($idEntite1)
 				if ((($title = valider("title")))
 					&& ($descr = valider("descr")) 
 					&& ($duration = valider("duration"))
-					&& ($theme = valider("theme"))) {
+					&& ($theme = valider("theme"))
+					&& ($image = valider("image"))) {
 					if ($connectedId != $idEntite1) {
 						$data["status"] = 403;
 					} else {
-						$id = mkExercice($title, $descr, $duration, $theme, $idEntite1); 
+						$id = mkExercice($title, $descr, $duration, $theme, $idEntite1, $image); 
 						$data["exercice"] = getExercice($id);
 						$data["success"] = true;
 						$data["status"] = 201;
@@ -237,7 +259,7 @@ if (valider("request")) {
 					if ($connectedId != $idEntite1) {
 						$data["status"] = 403;
 					} else {
-						$id = upExercice($idEntite2, $title, $descr, $duration, $theme);
+						$id = upExercice($idEntite2, $title, $descr, $duration, $theme, $image);
 						$data["exercice"] = getExercice($id);				
 						$data["success"] = true;
 						$data["status"] = 201; 
@@ -265,11 +287,39 @@ if (valider("request")) {
 			// GESTION DES CYCLES
 
 			case 'GET_cycles' :
-				// GET /api/users/<id>/cycles?$title...theme...breaktime...
-			
-				break;
+				// GET /api/cycles
+				if ($idEntite1){
+					// GET /api/cycles/<id>
+					// si un id est fourni on renvoi le cycle sélectionné
+					// sinon tous
+					$data["cycles"] = getCycle($idEntite1);
+					$data["success"] = true;
+					$data["status"] = 200;
+				} else {
+					$data["cycles"] = getCycles();
+					$data["success"] = true;
+					$data["status"] = 200;
+				}
+			break;
+
+			case 'GET_users_cycles' :
+				// GET /api/users/<id>/cycles
+				if ($idEntite1){
+					// GET /api/cycles/<id>
+					// si un id est fourni on renvoi les cycles de l'utilisateur
+					$data["cycles"] = getCycles($idEntite1);
+					$data["success"] = true;
+					$data["status"] = 200;
+				} else {
+					$data["cycles"] = getCycles();
+					$data["success"] = true;
+					$data["status"] = 200;
+				}
+			break;
+
+
 			case 'POST_users_cycles' :
-				// POST /api/users/<id>/cycles?$title...theme...breaktime...
+				// POST /api/users/<id>/cycles?$title...theme...breaktime...repetition...
 				if ($idEntite1)
 				if (!$idEntite2) {
 					if ((($title = valider("title")))
@@ -286,6 +336,7 @@ if (valider("request")) {
 					}
 				}
 				} else {
+					// POST /api/users/<id>/cycles/<id>?$order...duration...exerciceid...
 					if ((($order = valider("order")))
 					&& ($duration = valider("duration")) 
 					&& ($exerciceid = valider("exerciceid"))) {
@@ -300,6 +351,126 @@ if (valider("request")) {
 					}
 				}
 			break;
+
+			case 'PUT_users_cycles' :
+				// PUT /api/users/<id>/cycles/<id>?old_order...new_order...exerciceid...
+				// echange l'ordre de deux exercices dans un cycle
+				if ($idEntite1)
+				if ($idEntite2) {
+					if ($connectedId != $idEntite1 && (!isAdmin($connectedId))) {
+						$data["status"] = 403;
+					} else {
+						if ((($old_order = valider("old_order")))
+						&& ($new_order = valider("new_order")) 
+						&& ($exerciceid = valider("exerciceid"))) {
+							if ($id = moveExCycle($old_order, $new_order, $idEntite2, $exerciceid)) {	
+								$data["innercycle"] = getExCycle($id);		
+								$data["success"] = true;
+								$data["status"] = 200; 
+							} else {
+								// erreur 
+							}
+						}
+					}
+				}
+
+			break;
+
+			case 'DELETE_users_cycles' :
+				// DELETE /api/users/<id>/cycles/<id>
+				if ($idEntite1)
+				if ($idEntite2) {
+					if ($connectedId != $idEntite1 && (!isAdmin($connectedId))) {
+						$data["status"] = 403;
+					} else {
+						if (rmCycle($idEntite2)) {				
+							$data["success"] = true;
+							$data["status"] = 200; 
+						} else {
+							// erreur 
+						}
+					}
+				}
+			break;
+
+			// GESTION DES GROUPES
+			
+			case 'GET_groups' :
+				// GET /api/groups
+				if ($idEntite1){
+					// GET /api/groups/<id>
+					// si un id est fourni on renvoi le groupe selectionné
+					// sinon tous
+					$data["members"] = getGroup($idEntite1);
+					$data["success"] = true;
+					$data["status"] = 200;
+				} else {
+					$data["groupes"] = getGroups();
+					$data["success"] = true;
+					$data["status"] = 200;
+				}
+			break;
+
+			case 'GET_users_groups' :
+				// GET /api/users/<id>/groups/
+				if ($idEntite1){
+					$data["groupes"] = getGroups($idEntite1);
+					$data["success"] = true;
+					$data["status"] = 200;
+				}
+			break;
+
+
+			case 'POST_users_groups' :
+				// POST /api/users/<id>/groups?title...theme...members...
+				if ($idEntite1)
+				if (!$idEntite2) {
+					if ((($title = valider("title")))
+					&& ($theme = valider("theme")) 
+					&& ($members = valider("members"))) {
+					if ($connectedId != $idEntite1 || !isTrainer($connectedId)) {
+						$data["status"] = 403;
+					} else {
+						$id = mkGroup($title, $theme, $idEntite1, $members); 
+						$data["members"] = getGroup($id);
+						$data["success"] = true;
+						$data["status"] = 201;
+					}
+				}
+				} else {
+					// POST /api/users/<id>/cycles/<id>?$order...duration...exerciceid...
+					if ((($order = valider("order")))
+					&& ($duration = valider("duration")) 
+					&& ($exerciceid = valider("exerciceid"))) {
+						if ($connectedId != $idEntite1 || !isTrainer($connectedId)) {
+							$data["status"] = 403;
+						} else {
+							$id = insertExCycle($order, $duration, $idEntite2, $exerciceid); 
+							$data["innercycle"] = getExCycle($id);
+							$data["success"] = true;
+							$data["status"] = 201;
+						}
+					}
+				}
+			break;
+			
+			case "DELETE_users_groups":
+				// DELETE /api/users/<id>/groups/<id>
+				if ($idEntite1)
+				if ($idEntite2) {
+					if ($connectedId != $idEntite1 && (!isAdmin($connectedId))) {
+						$data["status"] = 403;
+					} else {
+						if (rmGroup($idEntite2, $idEntite1)) {				
+							$data["success"] = true;
+							$data["status"] = 200; 
+						} else {
+							// erreur 
+						}
+					}
+				}
+			break;
+
 
 			// case 'POST_users_cycles' :
 			// 	// POST /api/users/<id>/cycles/<id>?$order...duration...exerciceid...
