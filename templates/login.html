@@ -1,35 +1,49 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../js/utils.js"></script>
+<html>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="../js/utils.js"></script>
 
-<script>
-	$(document).ready(function() {
-	  $("#connexion-btn").click(function() {
-		var user = $("#login").val();
-		var pass = $("#pass").val();
-		connexion(user, pass);
-	  });
+	<script>
+		$(document).ready(function() {
+		
 
-	  $("#create-account-btn").click(function() {
-		var user = $("#login2").val();
-		var pass = $("#pass2").val();
-		var isTrainer = $("#is-trainer").is(':checked');
-		createAccount(user, pass,isTrainer);
-	  });
-	});
-</script>
+		$("#loginForm").submit(function() {
+			event.preventDefault();
+			console.log("submit du login form")
+			var user = $("#login").val();
+			var pass = $("#pass").val();
+			connexion(user, pass);
+			var storedUsername = localStorage.getItem('username');
+			console.log("sfdfsfzserc",storedUsername)
+			$("#pseudoActif").text(affichageUser);
+		});
 
-<div id="corps">
+		$("#createForm").submit(function() {
+			event.preventDefault();
+			console.log("submit du create form")
+			var user = $("#login2").val();
+			var pass = $("#pass2").val();
+			var isTrainer = $("#is-trainer").is(':checked');
+			createAccount(user, pass,isTrainer);
+			$("#pseudoActif").text(affichageUser);
+		});
 
-	<h1>Connexion</h1>
-	
-	Login : <input type="text" id="login" /><br />
-	Passe : <input type="password" id="pass" /><br />
-	<input type="submit" name="action" value="Connexion" id="connexion-btn" />
-
-	<h1>Create an account</h1>
-
-	Login : <input type="text" id="login2" /><br />
-	Passe : <input type="password" id="pass2" /><br />
-	<input type="checkbox" id="is-trainer" />Trainer <br />
-	<input type="submit" name="action" value="Creer un compte" id="create-account-btn" />
-</div>
+		$("#pseudoActif").text(affichageUser);
+		});
+	</script>
+	<body>
+			<p id="pseudoActif"></p>
+			<h1>Connexion</h1>
+			<form id="loginForm">
+			Pseudo : <input type="text" id="login" /><br />
+			Mot de passe : <input type="password" id="pass" /><br />
+			<input type="submit" name="action" value="Connexion" id="connexion-btn" />
+			</form>
+			<h1>Creer un compte</h1>
+			<form id="createForm">
+			Pseudo : <input type="text" id="login2" /><br />
+			Mot de passe : <input type="password" id="pass2" /><br />
+			<input type="checkbox" id="is-trainer" />Trainer <br />
+			<input type="submit" name="action" value="Creer un compte" id="create-account-btn" />
+			</form>
+	</body>
+</html>

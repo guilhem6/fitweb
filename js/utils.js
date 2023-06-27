@@ -2,7 +2,8 @@
 var cache = {
     "apiRoot" : false,
     "hash" : false, 
-    "pseudo" : false
+    "pseudo" : false,
+    "logged" :false
 }; 
 
 function load() {
@@ -40,6 +41,8 @@ function connexion(login,password){
             console.log(oRep);
             cache.hash = oRep.hash;
             cache.pseudo = login;
+            cache.logged = true;
+            localStorage.setItem('username', login);
         },
         error: function(){console.log("Mauvais login ou mot de passe")}
     });
@@ -91,6 +94,7 @@ function createAccount(login,password,isTrainer){
                                 console.log(oRep);
                                 cache.hash = oRep.hash;
                                 cache.pseudo = login;
+                                cache.logged = true
                             },
                             error: function(){
                                 console.log("Erreur de création de compte...");}})
@@ -109,3 +113,17 @@ function createAccount(login,password,isTrainer){
 
     }
 
+function affichageUser(){
+    console.log("affichage user ")
+    var storedUsername = localStorage.getItem('username');
+    if(storedUsername == null){
+        return("Vous n'êtes actuellement pas connecté.")
+    }
+    else{
+        return('Compte actif : '+storedUsername)
+    }
+}
+
+function deconnexion(){
+    localStorage.removeItem('username');
+}
