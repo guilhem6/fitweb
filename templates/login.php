@@ -11,15 +11,14 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 
 <div id="corps">
 
-<h1>Connexion</h1>
+<h1>Entrez vos identifiants</h1>
 
 <div id="formLogin">
 <form action="controleur.php" method="GET">
-Login : <input type="text" name="login" /><br />
-Passe : <input type="password" name="passe" /><br />
+Pseudo</br><input type="text" name="login" /><br />
+Mot de passe</br><input type="password" name="pass" /><br />
 <input type="submit" name="action" value="Connexion" />
 </form>
 </div>
-
 
 </div>

@@ -64,13 +64,13 @@ function autoriserUtilisateur($idUser)
 
 /********* EXERCICE 4 *********/
 
-function verifUserBdd($login,$passe)
+function verifUserBdd($login,$pass)
 {
 	// Vérifie l'identité d'un utilisateur 
 	// dont les identifiants sont passes en paramètre
 	// renvoie faux si user inconnu
 	// renvoie l'id de l'utilisateur si succès
-	$SQL="SELECT id FROM users WHERE pseudo='$login' AND passe='$passe'";
+	$SQL="SELECT id FROM users WHERE pseudo='$login' AND pass='$pass'";
 	// $tab = parcoursRs(SQLSelect($SQL));
 	// if (count($tab) != 0) return $tab[0]["id"]; 
 	// else return false; 

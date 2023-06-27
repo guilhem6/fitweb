@@ -25,52 +25,6 @@ $users = listerUtilisateurs("nbl");
 //tprint($users);	// préférer un appel à 
 mkTable($users);
 
-/*
-//TODO : afficher les prénoms des utilisateurs autorisés 
-for($i=0;$i<count($users);$i++) {
-	echo $users[$i]["pseudo"] . "<br/>" ;
-}
-
-// users est un tableau standard (indicé par des entiers)
-foreach($users as $nextCase) {
-	echo $nextCase["pseudo"] . "<br/>" ;
-}
-
-foreach($users as $nextCase) {
-	//nextCase est un tableau associatif
-	// on peut parcourir ses propriétés et valeurs 
-	foreach($nextCase as $cle => $val) {
-		echo "cle : $cle val : $val <br/>";
-	}
-}
-*/
-
-/*
-Array
-(
-    [0] => Array
-        (
-            [id] => 3
-            [pseudo] => tom
-            [passe] => web
-            [blacklist] => 0
-            [admin] => 1
-            [couleur] => orange
-        )
-
-    [1] => Array
-        (
-            [id] => 4
-            [pseudo] => isa
-            [passe] => bdd
-            [blacklist] => 0
-            [admin] => 0
-            [couleur] => green
-        )
-
-)
-*/
-
 echo "<hr />";
 echo "liste des utilisateurs non autorises de la base :"; 
 $users = listerUtilisateurs("bl");
@@ -87,19 +41,6 @@ mkTable($users);
 <?php
 $users = listerUtilisateurs();
 
-/*
-Généré : 
-
-<select name="idUser">
-<option value="3">
-tom
-</option>
-<option value="4">
-isa
-</option>
-</select>
-
-*/
 
 // idLastUser (s'il existe) contient l'id de l'utilisateur à présélectionner 
 $idLastUser = valider("idLastUser");

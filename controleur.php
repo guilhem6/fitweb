@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 	include_once "libs/maLibUtils.php";
@@ -41,12 +42,13 @@ session_start();
 			
 			case 'Connexion' :
 				// On verifie la presence des champs login et passe
+				
 				if ($login = valider("login"))
-				if ($passe = valider("passe"))
+				if ($pass = valider("pass"))
 				{
 					// On verifie l'utilisateur, et on crée des variables de session si tout est OK
 					// Cf. maLibSecurisation
-					verifUser($login,$passe); 	
+					verifUser($login,$pass); 	
 				}
 
 				// On redirigera vers la page index automatiquement
