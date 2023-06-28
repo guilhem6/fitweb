@@ -453,6 +453,28 @@ if (valider("request")) {
 					}
 				}
 			break;
+
+			case 'PUT_users_groups' :
+				// PUT /api/users/<id>/groups/<id>?members...
+				// echange l'ordre de deux exercices dans un cycle
+				if ($idEntite1)
+				if ($idEntite2) {
+					if ($connectedId != $idEntite1 && (!isAdmin($connectedId))) {
+						$data["status"] = 403;
+					} else {
+						if ((($old_order = valider("old_order")))
+						&& ($new_order = valider("new_order")) 
+						&& ($exerciceid = valider("exerciceid"))) {
+							if ($id = moveExCycle($old_order, $new_order, $idEntite2, $exerciceid)) {	
+								$data["innercycle"] = getExCycle($id);		
+								$data["success"] = true;
+								$data["status"] = 200; 
+							} else {
+								// erreur 
+							}
+						}
+					}
+				}
 			
 			case "DELETE_users_groups":
 				// DELETE /api/users/<id>/groups/<id>
@@ -471,7 +493,66 @@ if (valider("request")) {
 				}
 			break;
 
+			// GESTION DES ASSIGNMENTS
 
+			case 'GET_assignments' :
+				// GET /api/assignments
+				if ($idEntite1){
+					// GET /api/assignments/<id>
+					// si un id est fourni on renvoi le assignment selectionné
+					// sinon tous
+					$data["assignments"] = getAssignment($idEntite1);
+					$data["success"] = true;
+					$data["status"] = 200;
+				} else {
+					$data["assignment"] = getAssignments();
+					$data["success"] = true;
+					$data["status"] = 200;
+				}
+			break;
+			
+			case 'GET_groups_assignments' :
+				// GET /api/groups/<id>/assignments
+				if ($idEntite1){
+					// GET /api/groups/<id>/assignments
+					// On renvoie tous les assignments d'un groupe
+					$data["assignments"] = getAssignments($idEntite1);
+					$data["success"] = true;
+					$data["status"] = 200;
+				}
+			break;
+
+			case 'GET_users_assignments' :
+				// GET /api/users/<id>/assignments
+				if ($idEntite1){
+					// GET /api/users/<id>/assignments
+					// On renvoie tous les assignments d'un utilisateur
+					$data["assignments"] = getUserAssignments($idEntite1);
+					$data["success"] = true;
+					$data["status"] = 200;
+				}
+			break;
+
+			case 'POST_groups_assignments' :
+				// POST /api/groups/<id>/assignments
+				// On crée un assignment pour un groupe
+				if ($idEntite1)
+				if (!$idEntite2) {
+					if ((($title = valider("title")))
+					&& ($message = valider("message")) 
+					&& ($cycle_id = valider("cycle_id")) 
+					&& ($due_date = valider("due_date"))) {
+					if (!isTrainer($connectedId)) {
+						$data["status"] = 403;
+					} else {
+						$id = mkAssignment($title, $message, $cycle_id, $due_date, $idEntite1); 
+						$data["assignment"] = getAssignment($id);
+						$data["success"] = true;
+						$data["status"] = 201;
+					}
+				}}
+				break;
+				
 			// case 'POST_users_cycles' :
 			// 	// POST /api/users/<id>/cycles/<id>?$order...duration...exerciceid...
 			// 	if ($idEntite1)

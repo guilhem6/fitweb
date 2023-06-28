@@ -330,4 +330,29 @@ function rmGroup($groupid, $userId){
 	}
 	
 }
+
+// NEW CRUD ASSIGNMENTS ////////////////////////////////////////////////////////////////////////////////
+
+function getAssignments($idgroup = false) {
+	$SQL = "SELECT id, title, group_id, cycle_id message FROM assignments";
+	if ($idgroup) {
+		$SQL .= " WHERE group_id = '$idgroup'";
+	}
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getAssignment($id) {
+	$SQL = "SELECT * FROM assignments WHERE id = '$id'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function mkAssignment($title, $message, $cycle_id, $due_date, $group_id) {
+	$SQL = "INSERT INTO assignments(title, message, cycle_id, due_date, group_id, done) VALUES('$title', '$message', '$cycle_id', '$due_date', '$group_id', 0)";
+	return SQLInsert($SQL);
+}
+
+function getUserAssignments($idUser) {
+	$SQL = "SELECT a.* FROM assignments a INNER JOIN community c ON c.id = a.group_id INNER JOIN members m ON m.id_group = a.group_id WHERE m.id_user = '$idUser'";
+	return parcoursRs(SQLSelect($SQL));
+}
 ?>
