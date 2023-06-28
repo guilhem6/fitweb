@@ -22,13 +22,16 @@ function hash2pseudo($hash) {
 	return SQLGetChamp($SQL); 
 }
 
-function getUsers(){
+function getUsers($students = false){
 	$SQL = "SELECT id,pseudo FROM users";
+	if ($students) {
+		$SQL .= " WHERE trainer = 0 AND admin = 0";
+	}
 	return parcoursRs(SQLSelect($SQL));
 }
 
 function getUser($idUser){
-	$SQL = "SELECT id,pseudo FROM users WHERE id='$idUser'";
+	$SQL = "SELECT id,pseudo,trainer,admin FROM users WHERE id='$idUser'";
 	$rs = parcoursRs(SQLSelect($SQL));
 	if (count($rs)) return $rs[0]; 
 	else return array();
@@ -189,7 +192,7 @@ function isAdmin($id) {
 // NEW CRUD EXERCICE ////////////////////////////////////////////////////////////////////////////////
 
 function getExercices($id = false){
-	$SQL = "SELECT e.id,e.title,u.pseudo FROM exercices e INNER JOIN users u ON u.id = e.creator";
+	$SQL = "SELECT e.id,e.title,e.theme,e.image,u.pseudo FROM exercices e INNER JOIN users u ON u.id = e.creator";
 	if ($id) {
 		$SQL .= " WHERE creator='$id'";
 	}
@@ -205,13 +208,13 @@ function getExercice($id,$idUser=false){
 	else return array();
 }
 
-function mkExercice($title, $descr, $duration, $theme, $creatorid){
-	$SQL = "INSERT INTO exercices(title,descr,duration,theme,creator) VALUES('$title','$descr', '$duration', '$theme', '$creatorid')";
+function mkExercice($title, $descr, $duration, $theme, $creatorid, $image){
+	$SQL = "INSERT INTO exercices(title,descr,duration,theme,creator,image) VALUES('$title','$descr', '$duration', '$theme', '$creatorid', '$image')";
 	return SQLInsert($SQL);
 }
 
-function upExercice($id, $title, $descr, $duration, $theme){
-	$SQL = "UPDATE exercices SET title='$title', descr='$descr', duration='$duration', theme='$theme' WHERE id='$id'";;
+function upExercice($id, $title, $descr, $duration, $theme, $image){
+	$SQL = "UPDATE exercices SET title='$title', descr='$descr', duration='$duration', theme='$theme', image = $image WHERE id='$id'";;
 	return SQLUpdate($SQL);
 }
 
@@ -270,6 +273,14 @@ function rmCycle($cycleid) {
 	return SQLDelete($SQL);
 }
 
+function getCycles($iduser = false) {
+	$SQL = "SELECT * FROM cycles";
+	if ($iduser) {
+		$SQL .= " WHERE creator = '$iduser'";
+	}
+	return(parcoursRs(SQLSelect($SQL)));
+}
+
 function getCycle($cycleid) {
 	$SQL = "SELECT * FROM cycles WHERE id='$cycleid'";
 	return(parcoursRs(SQLSelect($SQL)));
@@ -278,5 +289,45 @@ function getCycle($cycleid) {
 function getExCycle($cycleid) {
 	$SQL = "SELECT id_exercice,order_ex,duration FROM innercycles WHERE id_cycle='$cycleid' ORDER BY order_ex ASC";
 	return parcoursRs(SQLSelect($SQL));
+}
+
+// NEW CRUD GROUP ////////////////////////////////////////////////////////////////////////////////
+
+function getGroup($id) {
+	$SQL = "SELECT u.pseudo, u.id FROM users u INNER JOIN members m ON m.id_user = u.id WHERE m.id_group = '$id' 
+	ORDER BY u.id ASC";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getGroups($id = false) {
+	$SQL = "SELECT * FROM community";
+	if ($id){
+		$SQL .= " WHERE creator = '$id'";
+	}  
+
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function mkGroup($title, $theme, $creatorid, $members) {
+	$SQL = "INSERT INTO community(title, theme, creator) VALUES('$title', '$theme', '$creatorid')";
+	$created_groupid = SQLInsert($SQL);
+	for ($i=0; $i< count($members); $i++) {
+		$new_member = $members[$i];
+		$SQL = "INSERT INTO members(id_user, id_group) VALUES('$new_member', '$created_groupid')";
+		SQLInsert($SQL);
+	}
+	return $created_groupid;
+}
+
+function rmGroup($groupid, $userId){
+	$SQL = "SELECT creator FROM community WHERE creator ='$userId'";
+	$autorise = SQLGetChamp($SQL);
+	if ($autorise) {
+		$SQL = "DELETE FROM members WHERE id_group ='$groupid'";
+		SQLDelete($SQL);
+		$SQL = "DELETE FROM community WHERE id ='$groupid'";
+		return SQLDelete($SQL);
+	}
+	
 }
 ?>

@@ -1,25 +1,33 @@
-<?php
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../../js/utils.js"></script>
 
-//C'est la propriété php_self qui nous l'indique : 
-// Quand on vient de index : 
-// [PHP_SELF] => /chatISIG/index.php 
-// Quand on vient directement par le répertoire templates
-// [PHP_SELF] => /chatISIG/templates/home.php
+<script>
+	$(document).ready(function() {
+	$("#logoutForm").submit(function() {
+		event.preventDefault();
+		console.log("submit du logout form");
+		deconnexionState = deconnexion();
 
-// Si la page est appelée directement par son adresse, on redirige en passant pas la page index
-// Pas de soucis de bufferisation, puisque c'est dans le cas où on appelle directement la page sans son contexte
-if (basename($_SERVER["PHP_SELF"]) != "index.php")
-{
-	header("Location:../../index.php?view=logout");
-	die("");
-}
+		
+		if(deconnexionState){
+			console.log("Vous avez été déconnecté avec succès.");
+			$("#logoutMsg").text("Vous avez ete deconnecte avec succes.");
+		}else{
+			console.log("Vous avez déjà été déconnecté.");
+			$("#logoutMsg").text("Vous avez deja ete deconnecte.");
+		}
 
-?>
+		window.location.href = '../login.html';
+	});
+	});
+</script>
 
-<div id="corps">
-
-<h1>Déconnexion</h1>
-
-Vous avez été déconnecté [en fait non, ça n'a pas encore été implémenté]
-
-</div>
+<body>
+	
+	<h1>Déconnexion</h1>
+	<form id="logoutForm">
+		<input type="submit" name="action" value="Se deconnecter" id="logout-btn" />
+	</form>
+	<p id="logoutMsg"></p>
+	
+</body>
