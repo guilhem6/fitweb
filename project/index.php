@@ -292,7 +292,7 @@ if (valider("request")) {
 					// GET /api/cycles/<id>
 					// si un id est fourni on renvoi le cycle sélectionné
 					// sinon tous
-					$data["cycles"] = getCycle($idEntite1);
+					$data["innercycle"] = getExCycle($idEntite1);
 					$data["success"] = true;
 					$data["status"] = 200;
 				} else {
