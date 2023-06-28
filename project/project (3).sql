@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 28 juin 2023 à 15:59
+-- Généré le : mer. 28 juin 2023 à 21:45
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `assignments` (
   `group_id` int NOT NULL,
   `done` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `assignments`
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `community` (
   `theme` varchar(100) NOT NULL,
   `creator` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `community`
@@ -68,7 +68,8 @@ CREATE TABLE IF NOT EXISTS `community` (
 
 INSERT INTO `community` (`id`, `title`, `theme`, `creator`) VALUES
 (3, 'Groupe test', 'Super theme', 3),
-(4, 'Groupe bien bibi', 'Que les bras', 1);
+(4, 'Groupe bien bibi', 'Que les bras', 1),
+(5, 'Groupe bien bibi', 'Que les bras', 3);
 
 -- --------------------------------------------------------
 
@@ -169,7 +170,11 @@ INSERT INTO `members` (`id_user`, `id_group`) VALUES
 (3, 3),
 (4, 4),
 (1, 4),
-(2, 4);
+(2, 4),
+(3, 5),
+(4, 5),
+(1, 5),
+(2, 5);
 
 -- --------------------------------------------------------
 
@@ -184,6 +189,14 @@ CREATE TABLE IF NOT EXISTS `scores` (
   `score` int NOT NULL,
   `feedback` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `scores`
+--
+
+INSERT INTO `scores` (`id_user`, `id_assignment`, `score`, `feedback`) VALUES
+(1, 4, 98, 'Pas mal du tout !'),
+(4, 4, 40, 'J\'ai trouvé ça vraiment trop dur !');
 
 -- --------------------------------------------------------
 

@@ -139,64 +139,14 @@ if (valider("request")) {
 				}
 			break; 
 
-			case 'GET_users_articles' : 
-				if ($idEntite1)
-				if ($idEntite2) {
-					// GET /api/users/<id>/articles/<id>
-					$data["article"] = getArticle($idEntite2, $idEntite1);
-					$data["success"] = true;
-					$data["status"] = 200;
-				} else {
-					// GET /api/users/<id>/articles
-					$data["articles"] = getArticlesUser($idEntite1);
-					$data["success"] = true;
-					$data["status"] = 200;
-				}
-			break;
-
-			case 'GET_articles' : 
-				if ($idEntite1){
-					// GET /api/articles/<id>
-					// TODO : vérifier user ?
-					$data["article"] = getArticle($idEntite1);
-					$data["success"] = true;
-					$data["status"] = 200;
-				} else {
-					// GET /api/articles
-					// Les listes de l'utilisateur connecté
-					$data["articles"] = getArticlesUser($connectedId);
-					$data["success"] = true;
-					$data["status"] = 200; 
-				}
-			break;
-
-			case 'GET_articles_paragraphes' : 
-				if ($idEntite1)
-				if ($idEntite2) {
-					// GET /api/articles/<id>/paragraphes/<id>
-					$data["paragraphe"] = getParagraphe($idEntite2, $idEntite1);
-					$data["success"] = true;
-					$data["status"] = 200;
-				} else {
-					// GET /api/articles/<id>/paragraphes
-					$data["paragraphes"] = getParagraphes($idEntite1);
-					$data["success"] = true;
-					$data["status"] = 200;		 
-				}
-			break; 
-
-			// case 'POST_users' : 
-			// 	// POST /api/users?pseudo=&pass=...
-			// 	if ($pseudo = valider("user"))
-			// 	if ($pass = valider("password")) {
-			// 		$id = mkUser($pseudo, $pass); 
-			// 		$data["user"] = getUser($id);
-			// 		$data["success"] = true;
-			// 		$data["status"] = 201;
-			// 	}
-			// break; 
-			
 			// NEW PROJECT
+			case 'GET_user' :
+					// GET l'id de l'utilisateur connecté (= hash en header)
+					$data["id"] = $connectedId;
+					$data["success"] = true;
+					$data["status"] = 200;
+			break;
+
 			case 'GET_exercices' :
 				if ($idEntite1){
 					// GET /api/exercices/<id>
@@ -249,7 +199,7 @@ if (valider("request")) {
 			break;
 
 			case 'PUT_users_exercices' : 
-				// DELETE /api/users/<id>/exercices/<id>?title=...descr=...duration=...theme=...
+				// PUT /api/users/<id>/exercices/<id>?title=...descr=...duration=...theme=...
 				if ($idEntite1)
 				if ($idEntite2)
 				if ((($title = valider("title")))
@@ -411,7 +361,7 @@ if (valider("request")) {
 				}
 			break;
 
-			case 'GET_users_groups' :
+			case 'GET_creator_groups' :
 				// GET /api/users/<id>/groups/
 				if ($idEntite1){
 					$data["groupes"] = getGroups($idEntite1);
@@ -420,6 +370,15 @@ if (valider("request")) {
 				}
 			break;
 
+			case 'GET_users_groups' :
+				// GET /api/users/<id>/groups
+				if ($idEntite1){
+					// GET /api/users/<id>/groups
+					// Renvoi les groupes du user 
+					$data["groups"] = getUserGroups($idEntite1);
+					$data["success"] = true;
+					$data["status"] = 200;
+				}
 
 			case 'POST_users_groups' :
 				// POST /api/users/<id>/groups?title...theme...members...
@@ -542,7 +501,7 @@ if (valider("request")) {
 					&& ($message = valider("message")) 
 					&& ($cycle_id = valider("cycle_id")) 
 					&& ($due_date = valider("due_date"))) {
-					if (!isTrainer($connectedId)) {
+					if (!isTrainer($connectedId) && !isAdmin($connectedId)) {
 						$data["status"] = 403;
 					} else {
 						$id = mkAssignment($title, $message, $cycle_id, $due_date, $idEntite1); 
@@ -552,6 +511,125 @@ if (valider("request")) {
 					}
 				}}
 				break;
+
+				case 'PUT_groups_assignments' : 
+					// PUT /api/groups/<id>/assignments/<id>?title...message...cycle_id...due_date...group_id...done...
+					if ($idEntite1)
+					if ($idEntite2) {
+						$done = valider("done");
+						if ((($title = valider("title")))
+						&& ($message = valider("message"))
+						&& ($cycle_id = valider("cycle_id"))
+						&& ($due_date = valider("due_date"))
+						&& ($done == 0 || $done == 1)){
+							if (!isTrainer($connectedId) && !isAdmin($connectedId)) {
+								$data["status"] = 403;
+							} else {
+								$data["mofif"] = upAssignments($title, $message, $cycle_id, $due_date, $idEntite1, $done, $idEntite2);				
+								$data["success"] = true;
+								$data["status"] = 201; 
+							}
+						}
+					}
+					
+				break;
+
+				case 'DELETE_assignments' :
+					// DELETE /api/assignments/<id>
+					if ($idEntite1)
+					{
+						if ((!isAdmin($connectedId)) || !isTrainer($connectedId)) {
+							$data["status"] = 403;
+						} else {
+							if (rmAssignment($idEntite1)) {				
+								$data["success"] = true;
+								$data["status"] = 200; 
+							} else {
+								// erreur 
+							}
+						}
+					}
+				break;
+
+				// GESTION DES SCORES
+
+				case 'GET_scores' :
+					// GET /api/scores
+					// On renvoi tous les scores
+					$data["scores"] = getScores();
+					$data["success"] = true;
+					$data["status"] = 200;
+				break;
+
+				case 'GET_users_scores' :
+					// GET /api/users/<id>/scores
+					if ($idEntite1)
+					if (!$idEntite2)	{
+						// GET /api/users/<id>/scores
+						// On renvoie tous les scores d'un utilisateur
+						$data["scores"] = getUserScores($idEntite1);
+						$data["success"] = true;
+						$data["status"] = 200;
+					} else {
+						// GET /api/users/<id>/scores/<id>
+						// On renvoi les scores de l'utilisateur pour le GROUPE donné
+						$data["scores"] = getUserScores($idEntite1, $idEntite2);
+						$data["success"] = true;
+						$data["status"] = 200;
+					}
+				break;
+
+				case 'GET_assignments_scores' :
+					// GET /api/assignments/<id>/scores
+					// Renvoi les scores de certains assignments
+					if ($idEntite1)
+					if (!$idEntite2){
+						// GET /api/users/<id>/scores
+						// On renvoie tous les scores d'un utilisateur
+						$data["scores"] = getAssiScores($idEntite1);
+						$data["success"] = true;
+						$data["status"] = 200;
+					} else {
+						// erreur
+					}
+				break;
+				
+				case 'POST_users_assignments' :
+					// POST /api/users/<id>/assignments/<id>?score...feedback...
+					// On crée un score pour l'utilisateur sur cet assignment
+					if ($idEntite1)
+					if ($idEntite2) {
+						if ((($score = valider("score")))
+						&& ($feedback = valider("feedback"))) {
+						if (($connectedId != $idEntite1 && (!isAdmin($connectedId))) || (!isAllowedScore($idEntite1,$idEntite2))) {
+							$data["status"] = 403;
+						} else {
+							mkScores($idEntite1, $idEntite2, $score, $feedback); 
+							$data["scores"] = getAssiScores($idEntite2);
+							$data["success"] = true;
+							$data["status"] = 201;
+						}
+					}}
+				break;
+
+				case 'PUT_users_assignments' : 
+					// PUT /api/users/<id>/assignments/<id>?score...feedback...
+					if ($idEntite1)
+					if ($idEntite2) {
+						if ((($score = valider("score")))
+						&& ($feedback = valider("feedback"))) {
+						if (($connectedId != $idEntite1 && (!isAdmin($connectedId))) || (!isAllowedScore($idEntite1,$idEntite2))) {
+							$data["status"] = 403;
+						} else {
+							upScores($idEntite1, $idEntite2, $score, $feedback); 
+							$data["scores"] = getAssiScores($idEntite2);
+							$data["success"] = true;
+							$data["status"] = 201;
+						}
+					}}
+					
+				break;
+				
 				
 			// case 'POST_users_cycles' :
 			// 	// POST /api/users/<id>/cycles/<id>?$order...duration...exerciceid...
@@ -572,47 +650,6 @@ if (valider("request")) {
 			// 	}
 			// break;
 				
-
-			case 'POST_users_articles' :
-				// POST /api/users/<id>/articles?titre=...
-				if ($idEntite1)
-				if (($titre = valider("titre")) !== false) {
-					if ($connectedId != $idEntite1) {
-						$data["status"] = 403;
-					} else {
-						$id = mkArticle($idEntite1, $titre); 
-						$data["article"] = getArticle($id);
-						$data["success"] = true;
-						$data["status"] = 201;
-					}
-				}
-			break; 
-
-			case 'POST_articles_paragraphes' :
-				// POST /api/articles/<id>/paragraphes?contenu=...
-				if ($idEntite1)
-				if (($contenu = valider("contenu")) !== false) {
-					if (!isUserOwnerOfArticle($connectedId,$idEntite1)) {
-						$data["status"] = 403;
-					} else {
-						$id = mkParagraphe($idEntite1, $contenu);					
-						$data["paragraphe"] = getParagraphe($id,$idEntite1);
-						$data["success"] = true; 
-						$data["status"] = 201;
-					}
-				}
-			break; 
-
-			case 'POST_articles' :
-				// POST /api/articles?titre=...
-				if (($titre = valider("titre")) !== false) {
-					$id = mkArticle($connectedId, $titre); 
-					$data["article"] = getArticle($id);
-					$data["success"] = true; 
-					$data["status"] = 201;
-				}
-			break;
-
 			case 'PUT_authenticate' : 
 				// régénère un hash ? 
 				$data["hash"] = mkHash($connectedId); 
@@ -624,97 +661,24 @@ if (valider("request")) {
 				// PUT  /api/users/?pass=...
 				if ($connectedId)
 				if ($pass = valider("password")) {
-                  	if (($connectedId == 1) || ($connectedId==2)) {
-                          $data["status"] = 403;
-                        } else if (chgPassword($connectedId,$pass)) {
-						$data["user"] = getUser($connectedId);
-						$data["success"] = true; 
-						$data["status"] = 200;
-					} else {
+                  	    if (chgPassword($connectedId,$pass)) {
+							$data["user"] = getUser($connectedId);
+							$data["success"] = true; 
+							$data["status"] = 200;
+						}
+					else {
 						// erreur 
 					}
 				}
 			break; 
 
-			case 'PUT_users_articles' : 
-				// PUT /api/users/<id>/articles/<id>?titre=...
-				if ($idEntite1)
-				if ($idEntite2)
-				if (($titre = valider("titre")) !== false) {
-					if ($connectedId != $idEntite1) {
-						$data["status"] = 403;
-					} else {
-						if (chgTitreArticle($idEntite2,$titre,$idEntite1)) {
-							$data["article"] = getArticle($idEntite2);
-							$data["success"] = true; 
-							$data["status"] = 200;
-						} else {
-							// erreur
-						}
-					}
-				}
-			break; 
-
-			case 'PUT_articles' : 
-				// PUT /api/articles/<id>?titre=...
-				if ($idEntite1)
-				if (($titre = valider("titre")) !== false) {
-					if (!isUserOwnerOfArticle($connectedId,$idEntite1)) {
-						$data["status"] = 403;
-					} else {
-						if (chgTitreArticle($idEntite1,$titre,$connectedId)) {
-							$data["article"] = getArticle($idEntite1);
-							$data["success"] = true; 
-							$data["status"] = 200;
-						} else {
-							// erreur
-						}
-					}
-				}
-			break; 
-
-			case 'PUT_articles_paragraphes' : 
-				// PUT /api/articles/<id>/paragraphes/<id>?contenu=...
-				if ($idEntite1)
-				if ($idEntite2)
-				if (($contenu = valider("contenu")) !== false) {
-					if (!isUserOwnerOfArticle($connectedId,$idEntite1)) {
-						$data["status"] = 403;
-					} else {
-						if (chgParagrapheContenu($idEntite2,$contenu,$idEntite1)) {
-							$data["paragraphe"] = getParagraphe($idEntite2,$idEntite1);
-							$data["success"] = true; 
-							$data["status"] = 200;
-						} else {
-							// erreur
-						}
-					}
-				}
-
-				// PUT /api/articles/<id>/paragraphes/<id>?ordre=...
-				if ($idEntite1)
-				if ($idEntite2)
-				if (($ordre = valider("ordre")) !== false ) {
-					if (!isUserOwnerOfArticle($connectedId,$idEntite1)) {
-						$data["status"] = 403;
-					} else {
-						updateOrdreParagraphe($ordre,$idEntite2,$idEntite1);
-						$data["paragraphe"] = getParagraphe($idEntite2,$idEntite1);
-						$data["success"] = true; 
-						$data["status"] = 200;
-					}
-				}
-			break;
-
 			case 'DELETE_users' : 
 				// DELETE /api/users/<id> 
 				if ($idEntite1) {
-					if ($connectedId != $idEntite1) {
+					if ($connectedId != $idEntite1 && !isAdmin($connectedId)) {
 						$data["status"] = 403;
 					} else {
-                      	if (($idEntite1 == 1) || ($idEntite1==2)) {
-                          $data["status"] = 403;
-                        } else if (rmUser($idEntite1)) {
+                      	if (rmUser($idEntite1)) {
 							$data["success"] = true;
 							$data["status"] = 200;
 						} else {
@@ -724,55 +688,7 @@ if (valider("request")) {
 				}
 			break; 
 
-			case 'DELETE_users_articles' : 
-				// DELETE /api/users/<id>/articles/<id>
-				if ($idEntite1)
-				if ($idEntite2) {
-					if ($connectedId != $idEntite1) {
-						$data["status"] = 403;
-					} else {
-						if (rmArticle($idEntite2, $idEntite1)) {				
-							$data["success"] = true;
-							$data["status"] = 200; 
-						} else {
-							// erreur 
-						}
-					}
-				}
-			break; 
-
-			case 'DELETE_articles' : 
-				// DELETE /api/articles/<id>
-				if ($idEntite1) {
-					if (!isUserOwnerOfArticle($connectedId,$idEntite1)) {
-						$data["status"] = 403;
-					} else {
-						if (rmArticle($idEntite1, $connectedId)) {				
-							$data["success"] = true;
-							$data["status"] = 200; 
-						} else {
-							// erreur 
-						}
-					}
-				}
-			break; 
-
-			case 'DELETE_articles_paragraphes' : 
-				// DELETE /api/articles/<id>/paragraphes/<id>
-				if ($idEntite1)
-				if ($idEntite2) {
-					if (!isUserOwnerOfArticle($connectedId,$idEntite1)) {
-						$data["status"] = 403;
-					} else {
-						if (rmParagraphe($idEntite2, $idEntite1)) {				
-							$data["success"] = true;
-							$data["status"] = 200;  
-						} else {
-							// erreur 
-						}
-					}
-				}
-			break; 
+		
 		} // switch(action)
 	} //connected
 }

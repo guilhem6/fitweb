@@ -188,6 +188,7 @@ function isAdmin($id) {
 	$SQL = "SELECT admin FROM users WHERE id = '$id'";
 	return SQLGetChamp($SQL);
 }
+ 
 
 // NEW CRUD EXERCICE ////////////////////////////////////////////////////////////////////////////////
 
@@ -287,7 +288,7 @@ function getCycle($cycleid) {
 }
 
 function getExCycle($cycleid) {
-	$SQL = "SELECT id_exercice,order_ex,duration FROM innercycles WHERE id_cycle='$cycleid' ORDER BY order_ex ASC";
+	$SQL = "SELECT e.title,e.image,i.id_exercice,i.order_ex,i.duration FROM innercycles i INNER JOIN exercices e ON i.id_exercice = e.id WHERE id_cycle='$cycleid' ORDER BY order_ex ASC";
 	return parcoursRs(SQLSelect($SQL));
 }
 
@@ -307,6 +308,12 @@ function getGroups($id = false) {
 
 	return parcoursRs(SQLSelect($SQL));
 }
+
+function getUserGroups($idUser) {
+	$SQL = "SELECT c.* FROM community c INNER JOIN members m ON c.id = m.id_group WHERE m.id_user = '$idUser'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
 
 function mkGroup($title, $theme, $creatorid, $members) {
 	$SQL = "INSERT INTO community(title, theme, creator) VALUES('$title', '$theme', '$creatorid')";
@@ -334,7 +341,7 @@ function rmGroup($groupid, $userId){
 // NEW CRUD ASSIGNMENTS ////////////////////////////////////////////////////////////////////////////////
 
 function getAssignments($idgroup = false) {
-	$SQL = "SELECT id, title, group_id, cycle_id message FROM assignments";
+	$SQL = "SELECT * FROM assignments";
 	if ($idgroup) {
 		$SQL .= " WHERE group_id = '$idgroup'";
 	}
@@ -354,5 +361,55 @@ function mkAssignment($title, $message, $cycle_id, $due_date, $group_id) {
 function getUserAssignments($idUser) {
 	$SQL = "SELECT a.* FROM assignments a INNER JOIN community c ON c.id = a.group_id INNER JOIN members m ON m.id_group = a.group_id WHERE m.id_user = '$idUser'";
 	return parcoursRs(SQLSelect($SQL));
+}
+
+function upAssignments($title, $message, $cycle_id, $due_date, $group_id, $done, $idAssi) {
+	$SQL = "UPDATE assignments SET title='$title', message='$message', cycle_id='$cycle_id', due_date='$due_date', group_id = $group_id, done='$done' WHERE id='$idAssi'";
+	return SQLUpdate($SQL);
+}
+
+function rmAssignment($assignid) {
+	$SQL = "DELETE s FROM scores s INNER JOIN assignments a ON a.id = s.id_assignment WHERE a.id ='$assignid'";
+	SQLDelete($SQL);
+	$SQL = "DELETE FROM assignments WHERE id ='$assignid'";
+	return SQLDelete($SQL);
+}
+
+// NEW CRUD SCORES
+
+function getScores() {
+	$SQL = "SELECT * FROM scores";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getUserScores($id_user, $id_group = false) {
+	if ($id_group) {
+		$SQL = "SELECT * FROM scores s INNER JOIN assignments a ON s.id_assignment = a.id WHERE s.id_user = '$id_user' AND a.group_id = '$id_group' ORDER BY a.due_date ASC";
+		return parcoursRs(SQLSelect($SQL));
+	} else {
+		$SQL = "SELECT * FROM scores s INNER JOIN assignments a ON s.id_assignment = a.id WHERE id_user = '$id_user' ORDER BY a.due_date ASC";
+		return parcoursRs(SQLSelect($SQL));
+	}
+	
+}
+
+function getAssiScores($id_assignment) {
+	$SQL = "SELECT * FROM scores WHERE id_assignment = '$id_assignment'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function isAllowedScore($id_user, $id_assignment) {
+	$SQL = "SELECT m.id_user FROM members m INNER JOIN assignments a ON a.group_id = m.id_group WHERE a.id = '$id_assignment' AND m.id_user = '$id_user'";
+	return SQLGetChamp($SQL);
+}
+
+function mkScores($id_user, $id_assignment, $score, $feedback) {
+	$SQL = "INSERT INTO scores(id_user, id_assignment, score, feedback) VALUES('$id_user', '$id_assignment', '$score', '$feedback')";
+	return SQLInsert($SQL);
+}
+
+function upScores($id_user, $id_assignment, $score, $feedback) {
+	$SQL = "UPDATE scores SET score='$score', feedback='$feedback' WHERE id_user='$id_user' AND id_assignment='$id_assignment'";
+	return SQLUpdate($SQL);
 }
 ?>
