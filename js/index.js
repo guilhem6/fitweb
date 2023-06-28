@@ -2,6 +2,7 @@
 var connected = false;
 
 function init() {
+    var a = "a";
     load();
     //
 
