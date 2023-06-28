@@ -12,6 +12,9 @@ function load() {
         .then(response => response.text())
         .then(data => {
             document.getElementById('header').innerHTML = data;
+            var estConnecte = this.estConnecte();
+            document.getElementById('connected').style.display = estConnecte? "inline" : "none";
+            document.getElementById('anonymous').style.display = estConnecte? "none" : "inline";
         })
         .catch(error => {
             console.error('Error:', error);
@@ -31,12 +34,12 @@ function load() {
 function connexion(login,password){
     console.log("connexion")
 
-      $.ajax({
+    $.ajax({
         type: "POST",
         url: "http://project/api/authenticate",
         data: {"user":login,"password":password},
         dataType: "json",
-        success: function(oRep){
+        success: function(oRep) {
 
             console.log(oRep);
             cache.hash = oRep.hash;
@@ -44,7 +47,7 @@ function connexion(login,password){
             cache.logged = true;
             localStorage.setItem('username', login);
         },
-        error: function(){console.log("Mauvais login ou mot de passe")}
+        error: function() {console.log("Mauvais login ou mot de passe")}
     });
 }
 
@@ -134,4 +137,12 @@ function deconnexion(){
     else{
     localStorage.removeItem('username');
     return true;}
+}
+
+function estConnecte(){
+    console.log("est connecte")
+    if(localStorage.getItem('username') == null){
+        return false
+    }
+    else return true
 }
