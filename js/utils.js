@@ -40,8 +40,37 @@ function connexion(login,password){
             console.log(oRep);
             localStorage.setItem('username', login);
             localStorage.setItem('hash',oRep.hash);
-            localStorage.setItem('userid',oRep.id);
-            window.location.href = '../index.html';
+            $.ajax({
+                type: "GET",
+                url:"http://project/api/user",
+                dataType:"json",
+                headers:{hash:oRep.hash},
+                success: function(user) {
+                    localStorage.setItem('userid',user.id);
+
+                    $.ajax({
+                        type: "GET",
+                        url:"http://project/api/users/"+user.id,
+                        dataType:"json",
+                            headers:{hash:oRep.hash},
+                            success: function(resp) {
+                                var currentUser = resp.user;
+                                localStorage.setItem('istrainer',currentUser.trainer);
+                                localStorage.setItem('isadmin',currentUser.admin);
+                                window.location.href = '../index.html';
+
+                            },
+                            error: function() {console.log("Erreur dans la récupération du type de l'utilisateur")}
+
+                    });
+                },
+                error: function() {console.log("Erreur dans la récupération de l'id")}
+
+            });
+
+            
+            
+            
         },
         error: function() {console.log("Mauvais login ou mot de passe")}
     });
@@ -129,6 +158,8 @@ function deconnexion(){
     localStorage.removeItem('username');
     localStorage.removeItem('hash');
     localStorage.removeItem('userid');
+    localStorage.removeItem('istrainer');
+    localStorage.removeItem('isadmin');
     return true;}
 }
 

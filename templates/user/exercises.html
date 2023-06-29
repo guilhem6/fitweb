@@ -67,6 +67,9 @@
 					$("#exercisesContainer").append(codeToAdd);
 					}
 				});
+				var istrainer = localStorage.getItem("istrainer")
+				if(istrainer==1){$("#addExerciseContainer").append(`<a href="exercisesadm.html" class="btn btn-primary my-2">Ajouter un exercice</a>`)}
+				
 			});
 		</script>
 	
@@ -79,7 +82,8 @@
 			<p class="lead text-body-secondary">Retrouvez ici tous les exercices disponibles sur notre plateforme !</p>
 			
 			<!-- Ajouter l'affichage uniquement si entraineur -->
-			<a href="exercisesadm.html" class="btn btn-primary my-2">Ajouter un exercice</a>
+			<div id="addExerciseContainer">
+			</div>
 		</section>
 	
 		<div class="container">
