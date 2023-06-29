@@ -8,20 +8,23 @@ var cache = {
 
 function load() {
     // Load header.html
-    fetch('header.html')
+    fetch("/fitweb/header.html")
         .then(response => response.text())
         .then(data => {
             document.getElementById('header').innerHTML = data;
-            var estConnecte = this.estConnecte();
-            document.getElementById('connected').style.display = estConnecte? "inline" : "none";
-            document.getElementById('anonymous').style.display = estConnecte? "none" : "inline";
+            if (this.estConnecte()) {
+                document.getElementById('anonymous').style.display = "none";
+            }
+            else {
+                document.getElementById('connected').style.display = "none";
+            }
         })
         .catch(error => {
             console.error('Error:', error);
         });
 
     // Load footer.html
-    fetch('footer.html')
+    fetch('/fitweb/footer.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('footer').innerHTML = data;
@@ -46,6 +49,7 @@ function connexion(login,password){
             cache.pseudo = login;
             cache.logged = true;
             localStorage.setItem('username', login);
+            window.location.href = '../index.html';
         },
         error: function() {console.log("Mauvais login ou mot de passe")}
     });
@@ -140,8 +144,9 @@ function deconnexion(){
 }
 
 function estConnecte(){
-    console.log("est connecte")
-    if(localStorage.getItem('username') == null){
+    console.log("fonction est connecte")
+    var username = localStorage.getItem('username')
+    if(username == null){
         return false
     }
     else return true

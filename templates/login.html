@@ -1,48 +1,89 @@
 <html>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="../js/utils.js"></script>
-
-	<script>
-		$(document).ready(function() {
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Webfit</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+		<script src="../js/utils.js"></script>
+		<script src="../js/index.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+			$(document).ready(function() {
+	
+				$("#loginForm").submit(function() {
+					event.preventDefault();
+					console.log("submit du login form")
+					var user = $("#login").val();
+					var pass = $("#pass").val();
+					connexion(user, pass);
+					var storedUsername = localStorage.getItem('username');
+					$("#pseudoActif").text(affichageUser);
+				});
 		
-
-		$("#loginForm").submit(function() {
-			event.preventDefault();
-			console.log("submit du login form")
-			var user = $("#login").val();
-			var pass = $("#pass").val();
-			connexion(user, pass);
-			var storedUsername = localStorage.getItem('username');
-			$("#pseudoActif").text(affichageUser);
-		});
-
-		$("#createForm").submit(function() {
-			event.preventDefault();
-			console.log("submit du create form")
-			var user = $("#login2").val();
-			var pass = $("#pass2").val();
-			var isTrainer = $("#is-trainer").is(':checked');
-			createAccount(user, pass,isTrainer);
-			$("#pseudoActif").text(affichageUser);
-		});
-
-		$("#pseudoActif").text(affichageUser);
-		});
-	</script>
-	<body>
-			<p id="pseudoActif"></p>
-			<h1>Connexion</h1>
-			<form id="loginForm">
-			Pseudo : <input type="text" id="login" /><br />
-			Mot de passe : <input type="password" id="pass" /><br />
-			<input type="submit" name="action" value="Connexion" id="connexion-btn" />
-			</form>
-			<h1>Creer un compte</h1>
-			<form id="createForm">
-			Pseudo : <input type="text" id="login2" /><br />
-			Mot de passe : <input type="password" id="pass2" /><br />
-			<input type="checkbox" id="is-trainer" />Trainer <br />
-			<input type="submit" name="action" value="Creer un compte" id="create-account-btn" />
-			</form>
+				$("#createForm").submit(function() {
+					event.preventDefault();
+					console.log("submit du create form")
+					var user = $("#login2").val();
+					var pass = $("#pass2").val();
+					var isTrainer = $("#is-trainer").is(':checked');
+					createAccount(user, pass,isTrainer);
+					$("#pseudoActif").text(affichageUser);
+				});
+		
+				$("#pseudoActif").text(affichageUser);
+			});
+		</script>
+		<style>
+			.marge {
+				margin:50px;
+			}
+			.marge > * {
+				margin-bottom: 5px;
+			}
+		</style>
+	</head>
+	<body onload="load()">
+		<div id="header"></div>
+		<div class="d-flex align-items-center py-4 bg-body-tertiary">
+			<main class="form-signin w-100 m-auto">
+				<form id="loginForm" class="marge">
+					<h1 class="h3 mb-3 fw-normal">Connexion</h1>
+					<p id="pseudoActif"></p>
+				
+					<div class="form-floating">
+						<input id="login" type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+						<label for="floatingInput">Pseudo</label>
+					</div>
+					<div class="form-floating">
+						<input id="pass" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+						<label for="floatingPassword">Mot de passe</label>
+					</div>
+					<button id="connexion-btn" class="btn btn-primary w-100 py-2" type="submit">Connexion</button>
+				</form>
+			</main>
+			<main class="form-signin w-100 m-auto">
+				<form id="createForm" class="marge">
+					<h1 class="h3 mb-3 fw-normal">Créer un compte</h1>
+					<p id="pseudoActif"></p>
+				
+					<div class="form-floating">
+						<input id="login2" type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+						<label for="floatingInput">Pseudo</label>
+					</div>
+					<div class="form-floating">
+						<input id="pass2" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+						<label for="floatingPassword">Mot de passe</label>
+					</div>
+					<div class="form-check text-start my-3">
+						<input id="is-trainer" class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
+						<label class="form-check-label" for="flexCheckDefault">
+						Trainer
+						</label>
+					</div>
+					<button id="create-account-btn" class="btn btn-primary w-100 py-2" type="submit">Créer un compte</button>
+				</form>
+			</main>
+		</div>
+		<div id="footer"></div>
 	</body>
 </html>
