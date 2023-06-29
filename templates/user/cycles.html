@@ -1,12 +1,60 @@
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
+
+		<style>
+			.font-weight-bold{
+				font-weight: bold;
+			}
+
+			.text-blue{
+				color: darkblue;
+			}
+		</style>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Vos Cycles Webfit</title>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 		<script src="../../js/utils.js"></script>
 		<script src="../../js/index.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				var settings = {
+				"url": "http://project/api/cycles",
+				"method": "GET",
+				"timeout": 0,
+				"dataType":"json",
+				"headers": {
+					"hash": "823679bebd3b19712899506974ceba5a"
+					},
+				};
+
+				$.ajax(settings).done(function (response) {
+					var cycles = response.cycles;
+					for(var i=0;i<cycles.length;i++){
+					cycle = cycles[i]
+					console.log(cycle);
+					var codeToAdd = `<div class="col">
+					<div class="card shadow-sm">
+						<div class="card-body">
+						</div>
+						<div class="card-body">
+						<p class="card-text font-weight-bold text-blue">${cycle.theme}</p>
+						<p class="card-text">${cycle.title}</p>
+						<p class="card-text">Entraineur: ${cycle.creator}</p>
+						<div class="d-flex justify-content-between align-items-center">
+						  <small class="text-body-secondary">${cycle.repetition} répétitions, ${cycle.breaktime}s de pause</small>
+						</div>
+					  </div>
+					</div>
+				  </div>`;
+					$("#cyclesContainer").append(codeToAdd);
+					}
+				});
+			});
+		</script>
 	</head>
 	<body onload="init()">
 		<!--<?php include 'header.html'; ?>-->
@@ -32,171 +80,8 @@
 			<div class="album py-5 bg-body-tertiary">
 			  <div class="container">
 		  
-				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-				  <div class="col">
-					<div class="card shadow-sm">
-						<div class="card-body">
-							<p class="card-text">31/06 - 15h30</p>
-						</div>
-						<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
-					  <div class="card-body">
-						<p class="card-text">Pompes, tractions et abdos.</p>
-						<p class="card-text">Entraineur: Jacques Random</p>
-						<div class="d-flex justify-content-between align-items-center">
-						  <div class="btn-group">
-							<button type="button" class="btn btn-sm btn-outline-secondary">Détails</button>
-						  </div>
-						  <small class="text-body-secondary">Durée: 30 mins</small>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col">
-					<div class="card shadow-sm">
-						<div class="card-body">
-							<p class="card-text">31/06 15h30</p>
-						</div>
-						<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
-					  <div class="card-body">
-						<p class="card-text">Pompes, tractions et abdos.</p>
-						<p class="card-text">Entraineur: Jacques Random</p>
-						<div class="d-flex justify-content-between align-items-center">
-						  <div class="btn-group">
-							<button type="button" class="btn btn-sm btn-outline-secondary">Détails</button>
-						  </div>
-						  <small class="text-body-secondary">Durée: 30 mins</small>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col">
-					<div class="card shadow-sm">
-						<div class="card-body">
-							<p class="card-text">31/06 15h30</p>
-						</div>
-						<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
-					  <div class="card-body">
-						<p class="card-text">Pompes, tractions et abdos.</p>
-						<p class="card-text">Entraineur: Jacques Random</p>
-						<div class="d-flex justify-content-between align-items-center">
-						  <div class="btn-group">
-							<button type="button" class="btn btn-sm btn-outline-secondary">Détails</button>
-						  </div>
-						  <small class="text-body-secondary">Durée: 30 mins</small>
-						</div>
-					  </div>
-					</div>
-				  </div>
-		  
-				  <div class="col">
-					<div class="card shadow-sm">
-						<div class="card-body">
-							<p class="card-text">31/06 15h30</p>
-						</div>
-						<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
-					  <div class="card-body">
-						<p class="card-text">Pompes, tractions et abdos.</p>
-						<p class="card-text">Entraineur: Jacques Random</p>
-						<div class="d-flex justify-content-between align-items-center">
-						  <div class="btn-group">
-							<button type="button" class="btn btn-sm btn-outline-secondary">Détails</button>
-						  </div>
-						  <small class="text-body-secondary">Durée: 30 mins</small>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col">
-					<div class="card shadow-sm">
-						<div class="card-body">
-							<p class="card-text">31/06 15h30</p>
-						</div>
-						<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
-					  <div class="card-body">
-						<p class="card-text">Pompes, tractions et abdos.</p>
-						<p class="card-text">Entraineur: Jacques Random</p>
-						<div class="d-flex justify-content-between align-items-center">
-						  <div class="btn-group">
-							<button type="button" class="btn btn-sm btn-outline-secondary">Détails</button>
-						  </div>
-						  <small class="text-body-secondary">Durée: 30 mins</small>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col">
-					<div class="card shadow-sm">
-						<div class="card-body">
-							<p class="card-text">31/06 15h30</p>
-						</div>
-						<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
-					  <div class="card-body">
-						<p class="card-text">Pompes, tractions et abdos.</p>
-						<p class="card-text">Entraineur: Jacques Random</p>
-						<div class="d-flex justify-content-between align-items-center">
-						  <div class="btn-group">
-							<button type="button" class="btn btn-sm btn-outline-secondary">Détails</button>
-						  </div>
-						  <small class="text-body-secondary">Durée: 30 mins</small>
-						</div>
-					  </div>
-					</div>
-				  </div>
-		  
-				  <div class="col">
-					<div class="card shadow-sm">
-						<div class="card-body">
-							<p class="card-text">31/06 15h30</p>
-						</div>
-						<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
-					  <div class="card-body">
-						<p class="card-text">Pompes, tractions et abdos.</p>
-						<p class="card-text">Entraineur: Jacques Random</p>
-						<div class="d-flex justify-content-between align-items-center">
-						  <div class="btn-group">
-							<button type="button" class="btn btn-sm btn-outline-secondary">Détails</button>
-						  </div>
-						  <small class="text-body-secondary">Durée: 30 mins</small>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col">
-					<div class="card shadow-sm">
-						<div class="card-body">
-							<p class="card-text">31/06 15h30</p>
-						</div>
-						<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
-					  <div class="card-body">
-						<p class="card-text">Pompes, tractions et abdos.</p>
-						<p class="card-text">Entraineur: Jacques Random</p>
-						<div class="d-flex justify-content-between align-items-center">
-						  <div class="btn-group">
-							<button type="button" class="btn btn-sm btn-outline-secondary">Détails</button>
-						  </div>
-						  <small class="text-body-secondary">Durée: 30 mins</small>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				  <div class="col">
-					<div class="card shadow-sm">
-						<div class="card-body">
-							<p class="card-text">31/06 15h30</p>
-						</div>
-						<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
-					  <div class="card-body">
-						<p class="card-text">Pompes, tractions et abdos.</p>
-						<p class="card-text">Entraineur: Jacques Random</p>
-						<div class="d-flex justify-content-between align-items-center">
-						  <div class="btn-group">
-							<button type="button" class="btn btn-sm btn-outline-secondary">Détails</button>
-						  </div>
-						  <small class="text-body-secondary">Durée: 30 mins</small>
-						</div>
-					  </div>
-					</div>
-				  </div>
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="cyclesContainer">
+				  
 				</div>
 			  </div>
 			</div>

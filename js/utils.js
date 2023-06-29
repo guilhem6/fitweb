@@ -1,11 +1,4 @@
 
-var cache = {
-    "apiRoot" : false,
-    "hash" : false, 
-    "pseudo" : false,
-    "logged" :false
-}; 
-
 function load() {
     // Load header.html
     fetch("/fitweb/header.html")
@@ -35,7 +28,7 @@ function load() {
 }
 
 function connexion(login,password){
-    console.log("connexion")
+    console.log("connexion", login, password)
 
     $.ajax({
         type: "POST",
@@ -45,10 +38,9 @@ function connexion(login,password){
         success: function(oRep) {
 
             console.log(oRep);
-            cache.hash = oRep.hash;
-            cache.pseudo = login;
-            cache.logged = true;
             localStorage.setItem('username', login);
+            localStorage.setItem('hash',oRep.hash);
+            localStorage.setItem('userid',oRep.id);
             window.location.href = '../index.html';
         },
         error: function() {console.log("Mauvais login ou mot de passe")}
@@ -66,7 +58,6 @@ function createAccount(login,password,isTrainer){
         dataType: "json",
         success: function(oRep){
 
-            cache.hash = oRep.hash;
             console.log(oRep);
 
             //récupération des utilisateurs
@@ -75,7 +66,7 @@ function createAccount(login,password,isTrainer){
                 url: "http://project/api/users",
                 dataType: "json",
                 headers:{
-                    hash:cache.hash
+                    hash:oRep.hash,
                 },
                 success: function(oRep){
         
@@ -97,11 +88,7 @@ function createAccount(login,password,isTrainer){
                             data: {"user":login,"password":password},
                             dataType: "json",
                             success: function(oRep){
-                    
                                 console.log(oRep);
-                                cache.hash = oRep.hash;
-                                cache.pseudo = login;
-                                cache.logged = true
                             },
                             error: function(){
                                 console.log("Erreur de création de compte...");}})
@@ -140,6 +127,8 @@ function deconnexion(){
     }
     else{
     localStorage.removeItem('username');
+    localStorage.removeItem('hash');
+    localStorage.removeItem('userid');
     return true;}
 }
 
