@@ -1,7 +1,53 @@
-<div id="corps">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../../js/utils.js"></script>
 
-<h1>Exercices</h1>
+<head>
+	<script>
+		$(document).ready(function() {
+			$("#exercisesContainer").text("Hello world")
 
-Page pour visualiser les exercices
+			$.ajax({
+				type: "GET",
+				url: "http://project/api/exercises",
+				headers: {
+					hash: "823679bebd3b19712899506974ceba5a"
+				},
+				dataType: "json",
+				success: function(oRep) {
+				},
+				error: function() {console.log("Erreur de chargement des exercices")}
+			});
+		});
+	</script>
+</head>
 
-</div>
+<body>
+
+	<h1>Les exercices propos&eacute;s</h1>
+
+	<div>
+		Filtrer selon : 
+		<label for="pays">Le th&egrave;me de l'exercice</label>
+		<select id="pays">
+			<option value="tout">Tout</option>
+			<option value="france">France</option>
+			<option value="espagne">Espagne</option>
+			<option value="italie">Italie</option>
+			<option value="royaume-uni">Royaume-Uni</option>
+		</select>
+		<label for="pays">Le cr&eacute;ateur de l'exercice</label>
+		<select id="pays">
+			<option value="tout">Tout</option>
+			<option value="france">France</option>
+			<option value="espagne">Espagne</option>
+			<option value="italie">Italie</option>
+			<option value="royaume-uni">Royaume-Uni</option>
+		</select>
+	
+	</div>
+
+	<div id="exercisesContainer">
+
+	</div>
+
+</body>
