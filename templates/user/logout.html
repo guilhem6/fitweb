@@ -1,33 +1,47 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../../js/utils.js"></script>
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Webfit</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+		<script src="../../js/utils.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-	$(document).ready(function() {
-	$("#logoutForm").submit(function() {
-		event.preventDefault();
-		console.log("submit du logout form");
-		deconnexionState = deconnexion();
+		<script>
+			$(document).ready(function() {
+			$("#logoutForm").on("click", function() {
+				event.preventDefault();
+				console.log("submit du logout form");
+				deconnexionState = deconnexion();
 
-		
-		if(deconnexionState){
-			console.log("Vous avez été déconnecté avec succès.");
-			$("#logoutMsg").text("Vous avez ete deconnecte avec succes.");
-		}else{
-			console.log("Vous avez déjà été déconnecté.");
-			$("#logoutMsg").text("Vous avez deja ete deconnecte.");
-		}
+				
+				if(deconnexionState){
+					console.log("Vous avez été déconnecté avec succès.");
+					$("#logoutMsg").text("Vous avez ete deconnecte avec succes.");
+				}else{
+					console.log("Vous avez déjà été déconnecté.");
+					$("#logoutMsg").text("Vous avez deja ete deconnecte.");
+				}
 
-		window.location.href = '../login.html';
-	});
-	});
-</script>
-
-<body>
-	
-	<h1>Déconnexion</h1>
-	<form id="logoutForm">
-		<input type="submit" name="action" value="Se deconnecter" id="logout-btn" />
-	</form>
-	<p id="logoutMsg"></p>
-	
-</body>
+				window.location.href = '../login.html';
+			});
+			});
+		</script>
+	</head>
+	<body onload="load();">
+		<div id="header"></div>
+		<div class="container px-4 py-5">
+			<h2 class="pb-2 border-bottom">Déconnexion</h2>
+			<div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
+			  <div class="col d-flex flex-column align-items-start gap-2">
+				<h2 class="fw-bold text-body-emphasis">Revenez !</h2>
+				<p class="text-body-secondary">Etes-vous sûr de vouloir nous quitter ? Sâchez que vous pourrez revenir n'importe quand vous entraîner avec nous !</p>
+				<a type="submit" id="logoutForm" href="#" class="btn btn-primary btn-lg">Déconnexion</a>
+			  </div>
+			</div>
+		  </div>
+		<p id="logoutMsg"></p>
+		<div id="footer"></div>
+	</body>
+</html>
