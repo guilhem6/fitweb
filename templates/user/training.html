@@ -1,25 +1,110 @@
-<?php
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<script src="../../assets/js/color-modes.js"></script>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Votre entrainement</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+		<link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/index.js"></script>
+		<link href="carousel.css" rel="stylesheet">
 
-//C'est la propriété php_self qui nous l'indique : 
-// Quand on vient de index : 
-// [PHP_SELF] => /chatISIG/index.php 
-// Quand on vient directement par le répertoire templates
-// [PHP_SELF] => /chatISIG/templates/trainind.php
+		<style>
+			.custom-container {
+				height : 600px;
+			}
+			.image-exo {
+				text-align: center;
+			}
+			.btn-lg {
+				margin : 5px;
+			}
+			.btn-pas-fait {
+				background-color : red;
+			}
+		</style>
+		
 
-// Si la page est appelée directement par son adresse, on redirige en passant pas la page index
-// Pas de soucis de bufferisation, puisque c'est dans le cas où on appelle directement la page sans son contexte
-if (basename($_SERVER["PHP_SELF"]) != "index.php")
-{
-	header("Location:../../index.php?view=training");
-	die("");
-}
+	</head>
+	<body onload="init()">
 
-?>
+		<div id="header"></div>
+	
+	
+		<main>
 
-<div id="corps">
+			<div id="myCarousel" class="carousel slide mb-6" data-bs-ride="carousel" data-bs-theme="light">
+			<div class="carousel-indicators">
+				<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-label="Slide 1" aria-current="true"></button>
+				<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
+				<button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
+			</div>
+			<div class="carousel-inner">
+				<div class="carousel-item active" data-bs-interval="7000">
+				<svg class="bd-placeholder-img custom-container" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
+				<div class="container">
+					<div class="carousel-caption">
+					<h1>Cycle 1</h1>
+					<h2>Exo 1: pompes</h2>
+					<p>15 répétitions, 1min30</p>
+					<div class="btn-group">
+						<p><a class="btn btn-lg btn-primary" href="#">Pause !</a></p>
+						<p><a class="btn btn-lg btn-primary btn-pas-fait" href="#">Pas fait !</a></p>
+					</div>
+					<img class ="image-exo" src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="50%" height="30%">
+					</div>
+				</div>
+				</div>
+				<div class="carousel-item" data-bs-interval="3000">
+				<svg class="bd-placeholder-img  custom-container" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
+				<div class="container">
+					<div class="carousel-caption">
+					<h1>Cycle 1</h1>
+					<h2>Exo 2: développé couché</h2>
+					<p>10 répétitions, 1min</p>
+					<div class="btn-group">
+						<p><a class="btn btn-lg btn-primary" href="#">Pause !</a></p>
+						<p><a class="btn btn-lg btn-primary btn-pas-fait" href="#">Pas fait !</a></p>
+					</div>
+					<img class ="image-exo" src="../../ressources/programme-pectoraux.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="50%" height="30%">
+					</div>
+				</div>
+				</div>
+				<div class="carousel-item" data-bs-interval="5000">
+				<svg class="bd-placeholder-img custom-container" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="var(--bs-secondary-color)"></rect></svg>
+				<div class="container">
+					<div class="carousel-caption">
+					<h1>Cycle 1</h1>
+					<h2>Exo 3: squat jump</h2>
+					<p>25 répétitions, 1min</p>
+					<div class="btn-group">
+						<p><a class="btn btn-lg btn-primary" href="#">Pause !</a></p>
+						<p><a class="btn btn-lg btn-primary btn-pas-fait" href="#">Pas fait !</a></p>
+					</div>
+					<img class ="image-exo" src="../../ressources/sauts.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="50%" height="30%">
+					</div>
+				</div>
+				</div>
+			</div>
+			<button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Previous</span>
+			</button>
+			<button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+				<span class="carousel-control-next-icon" aria-hidden="true"></span>
+				<span class="visually-hidden">Next</span>
+			</button>
+			</div>
 
-<h1>Training</h1>
 
-Page pour visualiser l'entraînement actuel
+			
+		</main>
 
-</div>
+		<script src="../../assets/dist/js/bootstrap.bundle.min.js"></script>
+	
+	<div id="footer"></div>	
+	
+	</body>
+</html>
