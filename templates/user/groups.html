@@ -1,25 +1,82 @@
-<?php
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Webfit</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+		<script src="../../js/utils.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+			function getData() {
+				var hash = localStorage.getItem("hash");
+				$.ajax({
+					type: "GET",
+					url: "http://project/api/groups",
+					data: {"hash": hash},
+					dataType: "json",
+					success: function(oRep) {
+						console.log(oRep.groupes.length);
+						const container = document.querySelector('.row.row-cols-1.row-cols-sm-2.row-cols-md-3.g-3');
+						/*for (var i = 0; i < oRep.groupes.length; i++) {
+							debugger;
+						} */
+						var html = "";
+						oRep.groupes.forEach((group) => {
+							html = html + generateBlock(group.title, group.theme);
+						});
+						container.innerHTML = html;
+					},
+					error: function() { console.log("Erreur dans la requête pour récupérer les groupes") }
+				});
+			}
 
-//C'est la propriété php_self qui nous l'indique : 
-// Quand on vient de index : 
-// [PHP_SELF] => /chatISIG/index.php 
-// Quand on vient directement par le répertoire templates
-// [PHP_SELF] => /chatISIG/templates/home.php
-
-// Si la page est appelée directement par son adresse, on redirige en passant pas la page index
-// Pas de soucis de bufferisation, puisque c'est dans le cas où on appelle directement la page sans son contexte
-if (basename($_SERVER["PHP_SELF"]) != "index.php")
-{
-	header("Location:../../index.php?view=groups");
-	die("");
-}
-
-?>
-
-<div id="corps">
-
-<h1>Groupes</h1>
-
-Page pour visualiser ses groupes
-
-</div>
+			function generateBlock(titre, theme) {
+				return `
+					<div class="col">
+						<div class="card shadow-sm">
+							<div class="card-body">
+								<p class="card-text">${titre}</p>
+							</div>
+							<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
+							<div class="card-body">
+								<p class="card-text">Thème : ${theme}</p>
+							</div>
+						</div>
+					</div>
+				`;
+			}
+		</script>
+	</head>
+	<body onload="load(); getData();">
+		<div id="header"></div>
+		<main>
+			<section class="py-5 text-center container">
+			<div class="row py-lg-5">
+				<div class="col-lg-6 col-md-8 mx-auto">
+				<h1 class="fw-light">Vos groupes</h1>
+				<p class="lead text-body-secondary">Retrouvez ici tous vos groupes !</p>
+				</div>
+			</div>
+			</section>
+			<div class="album py-5 bg-body-tertiary">
+				<div class="container">
+					<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+						<div class="col">
+							<div class="card shadow-sm">
+								<div class="card-body">
+									<p class="card-text">Nom du groupe</p>
+								</div>
+								<img src="../../ressources/index.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500">
+								<div class="card-body">
+									<p class="card-text">Thème : </p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<div id="footer"></div>
+	</body>
+</html>
