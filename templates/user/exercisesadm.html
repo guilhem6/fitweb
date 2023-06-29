@@ -1,25 +1,104 @@
-<?php
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/index.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script>
+			$(document).ready(function() {
+				// Vérifier l'état des champs à chaque modification
+				$('.form-group input, .form-group select, .form-group textarea').on('change keyup', function() {
+					console.log("modif");
+					var allFieldsFilled = true;
 
-//C'est la propriété php_self qui nous l'indique : 
-// Quand on vient de index : 
-// [PHP_SELF] => /chatISIG/index.php 
-// Quand on vient directement par le répertoire templates
-// [PHP_SELF] => /chatISIG/templates/home.php
+					// Parcourir tous les champs requis
+					$('.form-group').each(function() {
+					var field = $(this).find('input, select, textarea');
+					if (field.prop('required') && field.val() === '') {
+						allFieldsFilled = false;
+						return false; // Sortir de la boucle each()
+					}
+					});
 
-// Si la page est appelée directement par son adresse, on redirige en passant pas la page index
-// Pas de soucis de bufferisation, puisque c'est dans le cas où on appelle directement la page sans son contexte
-if (basename($_SERVER["PHP_SELF"]) != "index.php")
-{
-	header("Location:../../index.php?view=exercisesadm");
-	die("");
-}
+					// Afficher ou masquer le bouton en fonction de l'état des champs
+					if (allFieldsFilled) {
+					$('#submit-btn').show();
+					} else {
+					$('#submit-btn').hide();
+					}
+				});
 
-?>
+				$('#exercice-form').submit(function(event) {
+					event.preventDefault(); // Empêche l'envoi du formulaire par défaut
 
+					 // Récupérer les valeurs des champs
+					var nomExercice = $('#nom').val();
+					var themeExercice = $('#theme').val();
+					var descriptionExercice = $('#description').val();
+					var dureeExercice = $('#duree').val();
+
+					// Afficher les valeurs dans la console
+					console.log('Nom de l\'exercice :', nomExercice);
+					console.log('Thème de l\'exercice :', themeExercice);
+					console.log('Description de l\'exercice :', descriptionExercice);
+					console.log('Durée de l\'exercice :', dureeExercice);
+
+					var settings = {
+						"url": "http://project/api/users/"+localStorage.getItem('userid')+"/exercices?title="+nomExercice+"&descr="+descriptionExercice+"&duration="+dureeExercice+"&theme="+themeExercice+"&image=/project/testo/png",
+						"method": "POST",
+						"timeout": 0,
+						"headers": {
+							"hash": localStorage.getItem("hash")
+						},
+					};
+
+					$.ajax(settings).done(function (response) {
+						console.log(response);
+					});
+				});
+			
+			});
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<h2>Ajouter un exercice</h2>
+			<form id="exercice-form">
+				<div class="form-group">
+					<label for="nom">Nom de l'exercice*:</label>
+					<input type="text" id="nom" name="nom" required>
+				</div>
+				<div class="form-group">
+					<label for="theme">Th&egrave;me de l'exercice*:</label>
+					<select id="theme" name="theme" required>
+						<option value="">S&eacute;lectionnez un th&egrave;me</option>
+						<option value="Pectoraux">Pectoraux</option>
+						<option value="Biceps">Biceps</option>
+						<option value="Dos">Dos</option>
+						<option value="Jambes">Jambes</option>
+						<option value="Cardio">Cardio</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="description">Description de l'exercice:</label>
+					<textarea id="description" name="description"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="duree">Dur&eacute;e de l'exercice (en minutes)*:</label>
+					<input type="text" id="duree" name="duree" pattern="[0-9]+" required>
+				</div>
+				<div class="form-group">
+					<label for="image">Image de l'exercice (.jpg ou .png):</label>
+					<div id="drop-area">
+						<input type="file" id="image" name="image" accept=".jpg, .png">
+					</div>
+				</div>
+				<button type="submit-btn">VALIDER MON EXERCICE</button>
+			</form>
+		</div>
+	</body>
 <div id="corps">
 
-<h1>Gestion des exercices</h1>
 
-Page pour gérer les exercices
 
 </div>
