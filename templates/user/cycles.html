@@ -53,6 +53,10 @@
 					$("#cyclesContainer").append(codeToAdd);
 					}
 				});
+
+				var istrainer = localStorage.getItem("istrainer")
+				if(istrainer==1){$("#addCycleContainer").append(`<a href="cyclesadm.html" class="btn btn-primary my-2">Ajouter un cycle</a>`)}
+
 			});
 		</script>
 	</head>
@@ -69,10 +73,10 @@
 				<div class="col-lg-6 col-md-8 mx-auto">
 				  <h1 class="fw-light">Vos cycles d'entrainement !</h1>
 				  <p class="lead text-body-secondary">Retrouvez ici tous vos cycles pour préparer au mieux vos futurs entrainements !</p>
-				  <p>
-					<a href="#" class="btn btn-primary my-2">Bouton</a>
-					<a href="#" class="btn btn-secondary my-2">Bouton secondaire</a>
-				  </p>
+				  <div id="addCycleContainer">
+					<!--<a href="#" class="btn btn-primary my-2">Bouton</a>
+					<a href="#" class="btn btn-secondary my-2">Bouton secondaire</a>-->
+				  </div>
 				</div>
 			  </div>
 			</section>

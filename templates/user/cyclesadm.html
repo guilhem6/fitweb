@@ -1,25 +1,156 @@
-<?php
+<!DOCTYPE html>
+<html>
+	<head>
+	<style>
+		#container {
+		display: flex;
+		justify-content: space-between;
+		}
 
-//C'est la propriété php_self qui nous l'indique : 
-// Quand on vient de index : 
-// [PHP_SELF] => /chatISIG/index.php 
-// Quand on vient directement par le répertoire templates
-// [PHP_SELF] => /chatISIG/templates/home.php
+		#left-column {
+		width: 70%;
+		}
 
-// Si la page est appelée directement par son adresse, on redirige en passant pas la page index
-// Pas de soucis de bufferisation, puisque c'est dans le cas où on appelle directement la page sans son contexte
-if (basename($_SERVER["PHP_SELF"]) != "index.php")
-{
-	header("Location:../../index.php?view=cyclesadm");
-	die("");
-}
+		#right-column {
+		width: 30%;
+		}
 
-?>
+		/*.exercise {
+		width: 100px;
+		height: 100px;
+		background-color: blue;
+		margin-bottom: 10px;
+		cursor: move;
+		}*/
 
-<div id="corps">
+		#timeline {
+		width: 100%;
+		height: 200px;
+		background-color: gray;
+		z-index: -3;
+		}
 
-<h1>Gestion des cycles</h1>
+				.font-weight-bold{
+					font-weight: bold;
+				}
 
-page pour administrer les cycles
+				.text-blue{
+					color: darkblue;
+				}
 
-</div>
+				.custom-bg-image {
+					background-size: cover;
+					z-index: 0;
+				}
+
+				.image-overlay {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					background-color: rgba(255, 255, 255, 0.5); /* Couleur blanche semi-transparente */
+					z-index: 1;
+				}
+
+				.card-body{
+					z-index:2
+				}
+
+
+	</style>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<meta name="description" content="">
+			<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+			<meta name="generator" content="Hugo 0.112.5">
+
+			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="../../js/utils.js"></script>
+
+	<script>
+		var selectedExercises=[]
+		$(document).ready(function() {
+		
+		$("#validerButton").click(function() {
+			var squares = $("#timeline .exercise");
+			var order = [];
+			squares.each(function() {
+			order.push($(this).text());
+			});
+			console.log("Carrés glissés/déposés : " + order.join(", "));
+		});
+
+		var settings = {
+					"url": "http://project/api/exercices",
+					"method": "GET",
+					"timeout": 0,
+					"dataType":"json",
+					"headers": {
+						"hash": localStorage.getItem("hash")
+						},
+					};
+
+					$.ajax(settings).done(function (response) {
+						var exercices = response.exercices;
+						for(var i=0;i<exercices.length;i++){
+						exercice = exercices[i]
+						console.log(exercice);
+						var codeToAdd = `
+						<div class="col exercise" id="${exercice.id}">
+							<div class="card shadow-sm custom-bg-image" style="background-image: url('http://${exercice.image}');">
+								<div class="image-overlay"></div>
+								<div class="card-body">
+									<p class="card-text font-weight-bold text-blue">${exercice.theme}</p>
+									<p class="card-text">${exercice.title}</p>
+								</div>
+							</div>
+						</div>
+						`;
+						var exerciseElement = $(codeToAdd);
+						exerciseElement.addClass("exercise");
+						$("#exercisesContainer").append(codeToAdd);
+						$(".exercise").draggable({ containment: "body", revert: "invalid" });
+						$("#timeline").droppable({
+							accept: ".exercise",
+							drop: function(event, ui) {
+							
+							var droppedSquare = ui.draggable;
+							console.log("exercise dropped, id : ",droppedSquare.attr("id"))
+							droppedSquare.appendTo($(this));
+							droppedSquare.css({ top: 0, left: 0 });
+
+							var squares = $(this).children(".exercise");
+							var height = (squares.length + 1) * (droppedSquare.outerHeight() + parseInt(squares.css("margin-bottom")));
+							$(this).css("height", height);
+							}
+						});
+						}
+					});
+		});
+	</script>
+	</head>
+	<body onload="load()">
+		<div id="header"></div>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+		<div id="container">
+			<div id="left-column">
+				<h1>Créer un cycle</h1>
+				<input type="number" min="0" placeholder="Durée de la pause (en secondes)">
+				<p>Choisir un exercice</p>
+				<div class="container">
+					<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="exercisesContainer">
+					</div>
+				</div>
+				<div id="right-column">
+					<p>Et le placer dans la timeline</p>
+					<div id="timeline" class="container"></div>
+					<button id="validerButton">VALIDER LE CYCLE</button>
+				</div>
+			</div>
+		</div>
+
+	
+	</body>
+</html>
