@@ -21,13 +21,14 @@
 
 		<script>
 			$(document).ready(function() {
+				var hash = localStorage.getItem("hash")
 				var settings = {
 				"url": "http://project/api/cycles",
 				"method": "GET",
 				"timeout": 0,
 				"dataType":"json",
 				"headers": {
-					"hash": "823679bebd3b19712899506974ceba5a"
+					"hash": hash
 					},
 				};
 
@@ -36,6 +37,19 @@
 					for(var i=0;i<cycles.length;i++){
 					cycle = cycles[i]
 					console.log(cycle);
+					/*var settings = {
+						"url": "http://project/api/users/3/cycles/1?order=1&duration=60&exerciceid=6",
+						"method": "POST",
+						"timeout": 0,
+						"dataType":"json",
+						"headers": {
+							"hash": hash
+						},
+					};
+
+					$.ajax(settings).done(function (response) {
+					console.log(response.innercycle);
+					});*/
 					var codeToAdd = `
 					<div class="col">
 						<div class="card shadow-sm">
@@ -43,7 +57,7 @@
 								<p class="card-text font-weight-bold text-blue">${cycle.theme}</p>
 								<p class="card-text">${cycle.title}</p>
 								<!--<p class="card-text">Entraineur: ${cycle.creator}</p>-->
-								<p class="card-text">Exercices: ${cycle.creator}</p>
+								<!--<p class="card-text">Exercices: ${cycle.creator}</p>-->
 								<div class="d-flex justify-content-between align-items-center">
 									<small class="text-body-secondary">${cycle.repetition} répétitions, ${cycle.breaktime}s de pause</small>
 								</div>

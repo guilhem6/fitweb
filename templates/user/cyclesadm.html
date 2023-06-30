@@ -182,21 +182,23 @@
 				<h1>Créer un cycle</h1>
 				<div class="form-group">
 					<label for="nom">Nom du cycle*:</label>
-					<input type="text" id="nom" name="nom" required>
+					<input type="text" id="nom" class="form-control" name="nom" required><br/>
 				</div>
 				<div class="form-group">
-					<label for="theme">Th&egrave;me du cycle*:</label>
-					<select id="theme" name="theme" required>
+					<label for="theme">Th&egrave;me du cycle*</label>
+					<select id="theme" name="theme" class="form-select" required>
 						<option value="">S&eacute;lectionnez un th&egrave;me</option>
 						<option value="Pectoraux">Pectoraux</option>
 						<option value="Biceps">Biceps</option>
 						<option value="Dos">Dos</option>
 						<option value="Jambes">Jambes</option>
 						<option value="Cardio">Cardio</option>
-					</select>
+					</select><br/>
 				</div>
-				<input type="number" min="0" placeholder="Durée de la pause (en secondes)" id="duree"><br/>
-				<input type="number" min="0" placeholder="Nombre de répétitions" id="nbrepetitions">
+				<label for="theme">Dur&eacute;e de la pause*</label>
+				<input type="number" min="0" placeholder="Durée de la pause (en secondes)" id="duree" class="form-control"><br/>
+				<label for="theme">Nombre de r&eacute;p&eacute;titions*</label>
+				<input type="number" min="0" placeholder="Nombre de répétitions" id="nbrepetitions" class="form-control"><br/>
 				<p>Choisir un exercice</p>
 				<div class="container">
 					<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3" id="exercisesContainer">
