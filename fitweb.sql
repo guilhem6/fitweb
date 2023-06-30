@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.4.1deb2ubuntu2
--- http://www.phpmyadmin.net
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Sep 27, 2016 at 11:57 PM
--- Server version: 5.7.13-0ubuntu0.16.04.2
--- PHP Version: 7.0.8-0ubuntu0.16.04.2
+-- Hôte : 127.0.0.1:3306
+-- Généré le : mer. 28 juin 2023 à 21:45
+-- Version du serveur : 8.0.31
+-- Version de PHP : 8.0.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -17,117 +18,214 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `tinyMVC`
+-- Base de données : `project`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `conversations`
+-- Structure de la table `assignments`
 --
 
-CREATE TABLE `conversations` (
-  `id` int(11) NOT NULL COMMENT 'Clé primaire',
-  `active` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'indique si la conversation est active',
-  `theme` varchar(40) CHARACTER SET latin1 NOT NULL COMMENT 'Thème de la conversation'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `assignments`;
+CREATE TABLE IF NOT EXISTS `assignments` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `message` varchar(100) NOT NULL,
+  `cycle_id` int NOT NULL,
+  `due_date` date NOT NULL,
+  `group_id` int NOT NULL,
+  `done` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `conversations`
+-- Déchargement des données de la table `assignments`
 --
 
-INSERT INTO `conversations` (`id`, `active`, `theme`) VALUES
-(1, 1, 'Le Web en EBM'),
-(2, 1, 'Les qualifs de foot pour la France');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `messages`
---
-
-CREATE TABLE `messages` (
-  `id` int(11) NOT NULL COMMENT 'Identifiant du message',
-  `idConversation` int(11) NOT NULL COMMENT 'Clé étrangère vers la table des conversations',
-  `idAuteur` int(11) NOT NULL COMMENT 'clé étrangère vers la table des auteurs',
-  `contenu` varchar(100) CHARACTER SET latin1 NOT NULL COMMENT 'Contenu du message'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `messages`
---
-
-INSERT INTO `messages` (`id`, `idConversation`, `idAuteur`, `contenu`) VALUES
-(1, 1, 3, 'Que penses-tu de la nouvelle organisation des cours en EBM ? Pas mal, non ?'),
-(2, 2, 4, 'Que va faire la France, cette fois-ci ?'),
-(3, 2, 3, 'Elle se qualifiera pour le mondial !'),
-(6, 2, 4, 'Hum... Pas sûr... espérons-le ! '),
-(5, 1, 4, 'Oui, tu as raison');
+INSERT INTO `assignments` (`id`, `title`, `message`, `cycle_id`, `due_date`, `group_id`, `done`) VALUES
+(4, 'First assign!', 'Hello faites ca pour vendredi svp', 5, '2023-06-30', 3, 0),
+(6, 'Second assign yeah!', 'Gros bibi pour le 14 juillet', 2, '2023-07-14', 4, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Structure de la table `community`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL COMMENT 'clé primaire, identifiant numérique auto incrémenté',
-  `pseudo` varchar(20) CHARACTER SET latin1 NOT NULL COMMENT 'pseudo',
-  `passe` varchar(20) CHARACTER SET latin1 NOT NULL COMMENT 'mot de passe',
-  `blacklist` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'indique si l''utilisateur est en liste noire',
-  `admin` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'indique si l''utilisateur est un administrateur',
-  `couleur` varchar(10) CHARACTER SET latin1 NOT NULL DEFAULT 'black' COMMENT 'indique la couleur préférée de l''utilisateur, en anglais'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `community`;
+CREATE TABLE IF NOT EXISTS `community` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `theme` varchar(100) NOT NULL,
+  `creator` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Dumping data for table `users`
+-- Déchargement des données de la table `community`
 --
 
-INSERT INTO `users` (`id`, `pseudo`, `passe`, `blacklist`, `admin`, `couleur`) VALUES
-(3, 'tom', 'ebm', 0, 1, 'orange'),
-(4, 'jpb', 'maestro', 0, 0, 'green');
+INSERT INTO `community` (`id`, `title`, `theme`, `creator`) VALUES
+(3, 'Groupe test', 'Super theme', 3),
+(4, 'Groupe bien bibi', 'Que les bras', 1),
+(5, 'Groupe bien bibi', 'Que les bras', 3);
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Structure de la table `cycles`
 --
 
---
--- Indexes for table `conversations`
---
-ALTER TABLE `conversations`
-  ADD PRIMARY KEY (`id`);
+DROP TABLE IF EXISTS `cycles`;
+CREATE TABLE IF NOT EXISTS `cycles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `theme` varchar(100) NOT NULL,
+  `creator` int NOT NULL,
+  `breaktime` int NOT NULL,
+  `repetition` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
--- Indexes for table `messages`
---
-ALTER TABLE `messages`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
+-- Déchargement des données de la table `cycles`
 --
 
+INSERT INTO `cycles` (`id`, `title`, `theme`, `creator`, `breaktime`, `repetition`) VALUES
+(5, 'Entrainement du Dos', 'Dos', 3, 20, 5),
+(2, 'secondcycle', 'courseapied', 1, 40, 7),
+(3, 'cyclepolo', 'courseapied', 4, 40, 7);
+
+-- --------------------------------------------------------
+
 --
--- AUTO_INCREMENT for table `conversations`
+-- Structure de la table `exercices`
 --
-ALTER TABLE `conversations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Clé primaire', AUTO_INCREMENT=3;
+
+DROP TABLE IF EXISTS `exercices`;
+CREATE TABLE IF NOT EXISTS `exercices` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `descr` varchar(100) NOT NULL,
+  `duration` int NOT NULL,
+  `theme` varchar(100) NOT NULL,
+  `creator` int NOT NULL,
+  `image` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 --
--- AUTO_INCREMENT for table `messages`
+-- Déchargement des données de la table `exercices`
 --
-ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identifiant du message', AUTO_INCREMENT=7;
+
+INSERT INTO `exercices` (`id`, `title`, `descr`, `duration`, `theme`, `creator`, `image`) VALUES
+(6, 'Super Exercice', 'Cet exercice fait bien les pecs !', 120, 'Pectoraux', 1, ''),
+(7, 'premierexo', 'yeya', 50, 'Biceps', 1, '/project/pompe.jpg'),
+(8, 'Squat', 'Plier les jambes et musclez les fesses !', 120, 'Summer body', 3, '/project/squat.jpg'),
+(9, 'Traction', 'Hop hop hop on monte le torse', 30, 'Dos large', 3, '/project/traction.jpg');
+
+-- --------------------------------------------------------
+
 --
--- AUTO_INCREMENT for table `users`
+-- Structure de la table `innercycles`
 --
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'clé primaire, identifiant numérique auto incrémenté', AUTO_INCREMENT=6;
+
+DROP TABLE IF EXISTS `innercycles`;
+CREATE TABLE IF NOT EXISTS `innercycles` (
+  `id_exercice` int NOT NULL,
+  `id_cycle` int NOT NULL,
+  `order_ex` int NOT NULL,
+  `duration` int NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `innercycles`
+--
+
+INSERT INTO `innercycles` (`id_exercice`, `id_cycle`, `order_ex`, `duration`) VALUES
+(7, 5, 2, 180),
+(8, 5, 1, 120),
+(6, 5, 3, 420);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `members`
+--
+
+DROP TABLE IF EXISTS `members`;
+CREATE TABLE IF NOT EXISTS `members` (
+  `id_user` int NOT NULL,
+  `id_group` int NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `members`
+--
+
+INSERT INTO `members` (`id_user`, `id_group`) VALUES
+(1, 3),
+(4, 3),
+(3, 3),
+(4, 4),
+(1, 4),
+(2, 4),
+(3, 5),
+(4, 5),
+(1, 5),
+(2, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `scores`
+--
+
+DROP TABLE IF EXISTS `scores`;
+CREATE TABLE IF NOT EXISTS `scores` (
+  `id_user` int NOT NULL,
+  `id_assignment` int NOT NULL,
+  `score` int NOT NULL,
+  `feedback` varchar(100) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `scores`
+--
+
+INSERT INTO `scores` (`id_user`, `id_assignment`, `score`, `feedback`) VALUES
+(1, 4, 98, 'Pas mal du tout !'),
+(4, 4, 40, 'J\'ai trouvé ça vraiment trop dur !');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `pseudo` varchar(100) NOT NULL,
+  `pass` varchar(100) NOT NULL,
+  `hash` varchar(100) NOT NULL,
+  `trainer` tinyint(1) NOT NULL,
+  `admin` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `pseudo`, `pass`, `hash`, `trainer`, `admin`) VALUES
+(1, 'antho', 'azer', '823679bebd3b19712899506974ceba5a', 1, 1),
+(2, 'testos', 'oui', '846fc8c9401170423bc58d7729fb6d0a', 0, 0),
+(3, 'guilhem', 'super', 'bba7c629e080bdd40083f9d9ff32a898', 1, 0),
+(4, 'marco', 'polo', 'a18cc49e47b9dd77e5aebef85601c316', 0, 0);
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

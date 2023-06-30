@@ -1,0 +1,40 @@
+Bonjour et bienvenue dans les consignes d'installation de Fitweb.
+
+Tout d'abord, nous avons utilisé comme outils :
+- phpMyAdmin : gestionnaire de bases de données MySQL
+- Wampserver64 : plateforme de développement web sous Windows
+
+1) Dans phpMyAdmin
+
+Créer une nouvelle base de données nommée "project", aller dans l'onglet SQL.
+Insérer dans le champ texte le contenu du fichier du projet Fitweb "fitweb.sql"
+Exécuter.
+Vérifier que la base de données contient 8 tables.
+
+2) Dans Wampserver64
+
+Il faut mettre en place un virtualhost à l'adresse du dossier fitweb.
+J'ai échoué à le faire sur mon PC sur Linux donc nous avons tous utilisé Wampserver pour ce faire.
+(*) Pour activer l'usage de Wampserver, taper Wamp dans le pop-up menu Windows et cliquer sur Wampserver64.
+Dans l'onglet qui s'ouvre en cliquant sur le logo Wamp (W) dans "Show hidden icons" du footer Windows,
+mettre la souris sur Your VirtualHost puis cliquer sur VirtualHost Management.
+Une page pour ajouter un VirtualHost s'affiche, il faut saisir :
+- Le nom du VirtualHost : "project"
+- L'adresse du dossier : "C:/wamp64/www/fitweb/project"
+Si ce n'est pas le cas, mettez votre dossier fitweb dans votre dossier www pour éviter tout problème.
+(Un changement dans cette adresse a posé problème dans notre groupe)
+Créer le VirtualHost en appuyant sur le bouton en bas de page.
+
+Une fois que le virtualhost est mis en place, rendez-vous à l'adresse
+"http://localhost/fitweb/"
+et vérifier que la page d'accueil de fitweb s'affiche.
+
+Sinon, vérifier les étapes précédentes et vérifier que Wamp est bien en cours d'exécution (étape (*)).
+
+Maintenant vous devriez être capables d'utiliser le site.
+Des identifiants pour se connecter sont disponibles dans la base de données, table users.
+Voici un exemple d'identifiant et mot de passe :
+- Pseudo : guilhem
+- Mot de passe : super
+
+Bonne visite du site !
