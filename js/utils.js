@@ -160,6 +160,7 @@ function deconnexion(){
     localStorage.removeItem('userid');
     localStorage.removeItem('istrainer');
     localStorage.removeItem('isadmin');
+    localStorage.removeItem('trainingId');
     return true;}
 }
 
